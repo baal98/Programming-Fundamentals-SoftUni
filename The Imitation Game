@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace The_Imitation_Game
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string input = Console.ReadLine();
+            string command;
+            StringBuilder sb = new StringBuilder();
+            sb.Append(input);
+
+            while ((command = Console.ReadLine()) != "Decode")
+            {
+                List<string> inputs = command.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList();
+                string action = inputs[0];
+
+                if (action == "Move")
+                {
+                    int numberOfLetters = int.Parse(inputs[1]);
+                    string lettersToMove = input.Substring(0, numberOfLetters);
+                    input = input.Remove(0, numberOfLetters);
+                    input += lettersToMove;
+                }
+                else if (action == "Insert")
+                {
+                    int index = int.Parse(inputs[1]);
+                    string value = inputs[2];
+                    input = input.Insert(index, value);
+
+                }
+                else if (action == "ChangeAll")
+                {
+                    string substring = inputs[1];
+                    string replacement = inputs[2];
+                    input = input.Replace(substring, replacement);
+                }
+
+            }
+
+            Console.WriteLine($"The decrypted message is: {input}");
+
+        }
+    }
+}
