@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+namespace Mirror_Words
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string hiddenMessage = Console.ReadLine();
+
+            Regex regex = new Regex(@"\@{1}[A-Za-z]{3,}\@{2}[A-Za-z]{3,}\@{1}|\#{1}[A-Za-z]{3,}\#{2}[A-Za-z]{3,}\#{1}");
+
+            MatchCollection matches = regex.Matches(hiddenMessage);
+
+            List<string> words = new List<string>();
+            int pairsCounter = 0;
+            bool isPairsFound = false;
+
+            foreach (Match match in matches)
+            {
+                if (match.Success)
+                {
+                    words.Add(match.Value);
+                    pairsCounter++;
+                    isPairsFound = true;
+                }
+                else
+                {
+                    Console.WriteLine("No word pairs found!");
+                }
+            }
+
+            List<string> mirrorPairs = new List<string>();
+            Dictionary<string, string> dictionaryOfPairs = new Dictionary<string, string>();
+
+            if (isPairsFound)
+            {
+                Console.WriteLine($"{pairsCounter} word pairs found!");
+
+                foreach (var pair in words)
+                {
+                    string substring1 = pair.Substring(0, pair.Length / 2);
+                    string substring2 = pair.Substring(pair.Length / 2, pair.Length / 2);
+
+                    char[] charOfSubstring = substring1.ToCharArray();
+                    string reversedSubstring1 = "";
+                    for (int i = charOfSubstring.Length - 1; i >= 0; i--)
+                    {
+                        reversedSubstring1 += charOfSubstring[i];
+                    }
+                    if (substring2 == reversedSubstring1)
+                    {
+                       dictionaryOfPairs.Add(substring1, substring2);
+                    }
+                }
+                if (dictionaryOfPairs.Count > 0)
+                {
+                    Console.WriteLine($"The mirror words are:");
+                    int count = -1;
+                    foreach (var pair in dictionaryOfPairs)
+                    {
+                        count++;
+                        string word1 = pair.Key.Substring(1, pair.Key.Length-2);
+                        string word2 = pair.Value.Substring(1, pair.Value.Length - 2);
+                        if (count == dictionaryOfPairs.Count-1)
+                        {
+                            Console.Write($"{word1} <=> {word2}");
+                        }
+                        else
+                        {
+                            Console.Write($"{word1} <=> {word2}, ");
+                        }
+                        
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No mirror words!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No word pairs found!");
+                Console.WriteLine("No mirror words!");
+            }
+        }
+    }
+}
