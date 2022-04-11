@@ -1,0 +1,102 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Pirates
+{
+    class Crew
+    {
+        public Crew(string cities, int population, int gold)
+        {
+            this.Cities = cities;
+            this.Population = population;
+            this.Gold = gold;
+        }
+        public string Cities { get; set; }
+        public int Population { get; set; }
+        public int Gold { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command;
+            Dictionary<string, Crew> crews = new Dictionary<string, Crew>();
+
+            while ((command = Console.ReadLine()) != "Sail")
+            {
+                List<string> inputs = command.Split("||", StringSplitOptions.RemoveEmptyEntries).ToList();
+                string cities = inputs[0];
+                int population = int.Parse(inputs[1]);
+                int gold = int.Parse(inputs[2]);
+
+                Crew crew = new Crew(cities, population, gold);
+
+                if (!crews.ContainsKey(cities))
+                {
+                    crews[cities] = crew;
+                }
+                else
+                {
+                    crews[cities].Population += population;
+                    crews[cities].Gold += gold;
+                }
+            }
+
+            while ((command = Console.ReadLine()) != "End")
+            {
+                List<string> inputs = command.Split("=>", StringSplitOptions.RemoveEmptyEntries).ToList();
+                string action = inputs[0];
+
+                if (action == "Plunder")
+                {
+                    string town = inputs[1];
+                    int people = int.Parse(inputs[2]);
+                    int gold = int.Parse(inputs[3]);
+
+                    crews[town].Population -= people;
+                    crews[town].Gold -= gold;
+
+                    Console.WriteLine($"{town} plundered! {gold} gold stolen, {people} citizens killed.");
+
+                    if (crews[town].Population <= 0 || crews[town].Gold <= 0)
+                    {
+                        Console.WriteLine($"{town} has been wiped off the map!");
+                        crews.Remove(town);
+                    }
+
+                }
+                else if (action == "Prosper")
+                {
+                    string town = inputs[1];
+                    int gold = int.Parse(inputs[2]);
+
+                    if (gold < 0)
+                    {
+                        Console.WriteLine($"Gold added cannot be a negative number!");
+                        continue;
+                    }
+                    crews[town].Gold += gold;
+                    Console.WriteLine($"{gold} gold added to the city treasury. {town} now has {crews[town].Gold} gold.");
+                }
+            }
+
+            if (crews.Count > 0)
+            {
+                Console.WriteLine($"Ahoy, Captain! There are {crews.Count} wealthy settlements to go to:");
+
+                foreach (var crew in crews)
+                {
+                    Console.WriteLine($"{crew.Key} -> Population: {crew.Value.Population} citizens, Gold: {crew.Value.Gold} kg");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Ahoy, Captain! All targets have been plundered and destroyed!");
+            }
+
+        }
+    }
+}
