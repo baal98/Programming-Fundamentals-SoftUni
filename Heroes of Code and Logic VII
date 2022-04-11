@@ -1,0 +1,140 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Heroes_of_Code_and_Logic_VII
+{
+    class Hero
+    {
+        public Hero(string name, int hitPoint, int manaPoint)
+        {
+            this.Name = name;
+            this.HitPoint = hitPoint;
+            this.ManaPoint = manaPoint;
+        }
+        public string Name { get; set; }
+        public int HitPoint { get; set; }
+        public int ManaPoint { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int numberOfHeroes = int.Parse(Console.ReadLine());
+
+            Dictionary<string, Hero> heroes = new Dictionary<string, Hero>();
+
+            for (int i = 0; i < numberOfHeroes; i++)
+            {
+                List<string> list = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string name = list[0];
+                int hitPoint = int.Parse(list[1]);
+                int manaPoint = int.Parse(list[2]);
+
+                if (hitPoint > 100)
+                {
+                    hitPoint = 100;
+                }
+                if (manaPoint > 200)
+                {
+                    manaPoint = 200;
+                }
+                Hero hero = new Hero(name, hitPoint, manaPoint);
+
+                if (!heroes.ContainsKey(name))
+                {
+                    heroes[name] = hero;
+                }
+            }
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "End")
+            {
+                List<string> inputs = command.Split(" - ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string action = inputs[0];
+
+                if (action == "CastSpell")
+                {
+                    string name = inputs[1];
+                    int mpNeeded = int.Parse(inputs[2]);
+                    string spellName = inputs[3];
+
+                    if (heroes[name].ManaPoint >= mpNeeded)
+                    {
+                        heroes[name].ManaPoint -= mpNeeded;
+
+                        Console.WriteLine($"{name} has successfully cast {spellName} and now has {heroes[name].ManaPoint} MP!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{name} does not have enough MP to cast {spellName}!");
+                    }
+
+                }
+                else if (action == "TakeDamage")
+                {
+                    string name = inputs[1];
+                    int damage = int.Parse(inputs[2]);
+                    string attacker = inputs[3];
+
+                    heroes[name].HitPoint -= damage;
+
+                    if (heroes[name].HitPoint > 0)
+                    {
+                        Console.WriteLine($"{name} was hit for {damage} HP by {attacker} and now has {heroes[name].HitPoint} HP left!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{name} has been killed by {attacker}!");
+                        heroes.Remove(name);
+                    }
+                }
+                else if (action == "Recharge")
+                {
+                    string name = inputs[1];
+                    int amount = int.Parse(inputs[2]);
+                    int tempAmount = 200 - heroes[name].ManaPoint;
+
+                    heroes[name].ManaPoint += amount;
+
+                    if (heroes[name].ManaPoint > 200)
+                    {
+                        amount = tempAmount;
+                        heroes[name].ManaPoint = 200;
+                    }
+                    
+                    Console.WriteLine($"{name} recharged for {amount} MP!");
+                }
+                else if (action == "Heal")
+                {
+                    string name = inputs[1];
+                    int amount = int.Parse(inputs[2]);
+                    int tempAmount = 100 - heroes[name].HitPoint;
+                    heroes[name].HitPoint += amount;
+
+                    if (heroes[name].HitPoint > 100)
+                    {
+                        amount = tempAmount;
+                        heroes[name].HitPoint = 100;
+                    }
+
+                    Console.WriteLine($"{name} healed for {amount} HP!");
+
+                }
+            }
+
+            foreach (var hero in heroes)
+            {
+                Console.WriteLine(hero.Key);
+                Console.WriteLine($"  HP: {hero.Value.HitPoint}");
+                Console.WriteLine($"  MP: {hero.Value.ManaPoint}");
+            }
+
+        }
+    }
+}
