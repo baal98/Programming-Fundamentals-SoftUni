@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Messages_Manager
+{
+    public class MessagesUser
+    {
+        public MessagesUser(string userName, int sendedMessages, int receivedMessages)
+        {
+            this.UserName = userName;
+            this.SendedMessages = sendedMessages;
+            this.ReceivedMessages = receivedMessages;
+        }
+        public string UserName { get; set; }
+        public int SendedMessages { get; set; }
+        public int ReceivedMessages { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int capacityOfMessages = int.Parse(Console.ReadLine());
+
+            Dictionary<string, MessagesUser> usersDictionary = new Dictionary<string, MessagesUser>();
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "Statistics")
+            {
+                List<string> inputs = command.Split("=", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string action = inputs[0];
+
+                if (action == "Add")
+                {
+                    string username = inputs[1];
+                    int sent = int.Parse(inputs[2]);
+                    int received = int.Parse(inputs[3]);
+
+                    MessagesUser messagesUser = new MessagesUser(username, sent, received);
+
+                    if (!usersDictionary.ContainsKey(username))
+                    {
+                        usersDictionary[username] = messagesUser;
+                    }
+                }
+                else if (action == "Message")
+                {
+                    string sender = inputs[1];
+                    string receiver = inputs[2];
+
+                    if (usersDictionary.ContainsKey(sender) && usersDictionary.ContainsKey(receiver))
+                    {
+                        usersDictionary[sender].SendedMessages++;
+                        if ((usersDictionary[sender].SendedMessages + usersDictionary[sender].ReceivedMessages) >= capacityOfMessages)
+                        {
+                            Console.WriteLine($"{sender} reached the capacity!");
+                            usersDictionary.Remove(sender);
+                        }
+
+                        usersDictionary[receiver].ReceivedMessages++;
+                        if ((usersDictionary[receiver].SendedMessages + usersDictionary[receiver].ReceivedMessages) >= capacityOfMessages)
+                        {
+                            Console.WriteLine($"{receiver} reached the capacity!");
+                            usersDictionary.Remove(receiver);
+                        }
+                    }
+                }
+                else if (action == "Empty")
+                {
+                    string username = inputs[1];
+
+                    if (usersDictionary.ContainsKey(username))
+                    {
+                        usersDictionary.Remove(username);
+                    }
+                    if (username == "All")
+                    {
+                        usersDictionary.Clear();
+                    }
+                }
+            }
+            Console.WriteLine($"Users count: {usersDictionary.Count}");
+
+            foreach (var user in usersDictionary)
+            {
+                int sumMessages = user.Value.SendedMessages + user.Value.ReceivedMessages;
+                Console.WriteLine($"{user.Key} - {sumMessages}");
+            }
+        }
+    }
+}
