@@ -1,0 +1,70 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Tax_Calculator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> phones = Console.ReadLine().Split(", ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            string command = "";
+
+            while (command != "End")
+            {
+                command = Console.ReadLine();
+
+                List<string> input = command.Split(" - ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string action = input[0];
+
+                if (action == "End")
+                {
+                    break;
+                }
+                else if (action == "Add")
+                {
+                    string phoneModel = input[1];
+                    if (phones.Contains(phoneModel))
+                    {
+                        continue;
+                    }
+                    phones.Add(phoneModel);
+                }
+                else if (action == "Remove")
+                {
+                    string phoneModel = input[1];
+                    if (phones.Contains(phoneModel))
+                    {
+                        phones.Remove(phoneModel);
+                    }
+                }
+                else if (action == "Bonus phone")
+                {
+                    List<string> swapPhones = input[1].Split(":", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                    string oldPhone = swapPhones[0];
+                    string newPhone = swapPhones[1];
+
+                    if (phones.Contains(oldPhone))
+                    {
+                        phones.Insert(phones.IndexOf(oldPhone) + 1, newPhone);
+                    }
+                }
+                else if (action == "Last")
+                {
+                    string phoneModel = input[1];
+                    string tempPositions = phoneModel;
+                    if (phones.Contains(phoneModel))
+                    {
+                        phones.Remove(phoneModel);
+                        phones.Add(tempPositions);
+                    }
+                }
+            }
+            Console.WriteLine(string.Join(", ", phones));
+        }
+    }
+}
