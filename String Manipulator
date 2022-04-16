@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace String_Manipulator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string input = Console.ReadLine();
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "End")
+            {
+                List<string> inputs = command.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string action = inputs[0];
+
+                if (action == "Translate")
+                {
+                    char givvenChar = Convert.ToChar(inputs[1]);
+                    char replacementChar = Convert.ToChar(inputs[2]);
+
+                    input = input.Replace(givvenChar, replacementChar);
+                    Console.WriteLine(input);
+                }
+                else if (action == "Includes")
+                {
+                    string substring = inputs[1];
+                    if (input.Contains(substring))
+                    {
+                        Console.WriteLine("True");
+                    }
+                    else
+                    {
+                        Console.WriteLine("False");
+                    }
+                }
+                else if (action == "Start")
+                {
+                    string substring = inputs[1];
+                    if (input.StartsWith(substring))
+                    {
+                        Console.WriteLine("True");
+                    }
+                    else
+                    {
+                        Console.WriteLine("False");
+                    }
+                }
+                else if (action == "Lowercase")
+                {
+                    input = input.ToLower();
+                    Console.WriteLine(input);
+                }
+                else if (action == "FindIndex")
+                {
+                    char givvenChar = Convert.ToChar(inputs[1]);
+                    int indexOfGivvenChar = input.LastIndexOf(givvenChar);
+                    Console.WriteLine(indexOfGivvenChar);
+                }
+                else if (action == "Remove")
+                {
+                    int startIndex = int.Parse(inputs[1]);
+                    int count = int.Parse(inputs[2]);
+                    input = input.Remove(startIndex, count);
+                    Console.WriteLine(input);
+                }
+
+            }
+
+        }
+    }
+}
