@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Tax_Calculator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> vehicles = Console.ReadLine().Split(">>", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            double nationalProfit = 0;
+            
+
+            for (int i = 0; i < vehicles.Count; i++)
+            {
+                List<string> inputs = vehicles[i].Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string carType = inputs[0];
+                double carYearTax = double.Parse(inputs[1]);
+                int carKilometers = int.Parse(inputs[2]);
+
+                double carTax = 0;
+
+                if (carType == "family")
+                {
+                    carTax = 50 - carYearTax * 5 + (carKilometers / 3000) * 12;
+                    Console.WriteLine($"A {carType} car will pay {carTax:F2} euros in taxes.");
+                    nationalProfit += carTax;
+                }
+                else if (carType == "heavyDuty")
+                {
+                    carTax = 80 - carYearTax * 8 + (carKilometers / 9000) * 14;
+                    Console.WriteLine($"A {carType} car will pay {carTax:F2} euros in taxes.");
+                    nationalProfit += carTax;
+                }
+                else if (carType == "sports")
+                {
+                    carTax = 100 - carYearTax * 9 + (carKilometers / 2000) * 18;
+                    Console.WriteLine($"A {carType} car will pay {carTax:F2} euros in taxes.");
+                    nationalProfit += carTax;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid car type.");
+                    continue;
+                }
+
+            }
+            Console.WriteLine($"The National Revenue Agency will collect {nationalProfit:F2} euros in taxes.");
+        }
+    }
+}
