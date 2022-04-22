@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace More_Exercise
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<double> input = Console.ReadLine().Split().Select(double.Parse).ToList();
+
+            double sumInput = 0;
+            double inputAvg = 0;
+            foreach (var item in input)
+            {
+                sumInput += item;
+            }
+            inputAvg = sumInput / input.Count;
+
+            List<double> newList = new List<double>();
+
+            for (int i = 0; i < input.Count; i++)
+            {
+                if (input[i] > inputAvg)
+                {                    
+                    newList.Add(input[i]);
+                }
+
+            }
+            newList.Sort();
+            if (newList.Count >= 1)
+            {
+                for (int i = newList.Count - 1; i >= 0; i--)
+                {
+                    while (newList.Count > 5)
+                    {
+                        newList.RemoveAt(0);
+                    }
+
+                }
+                newList.Reverse();
+                //newList.RemoveAt(newList.Count)
+                foreach (var item in newList)
+                {
+                    Console.Write($"{item} ");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No");
+            }
+        }
+    }
+}
