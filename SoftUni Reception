@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace More_Exercise
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double firstEmpl = int.Parse(Console.ReadLine());
+            double secondEmpl = int.Parse(Console.ReadLine());
+            double thirdEmpl = int.Parse(Console.ReadLine());
+
+            double students = int.Parse(Console.ReadLine());
+
+            double sumPeoplePerHour = firstEmpl + secondEmpl + thirdEmpl;
+            double count = 0;
+
+            while (students > 0)
+            {
+                students -= sumPeoplePerHour;
+                count++;
+                if (count >= 4 && count % 4 == 0)
+                {
+                    count++;
+                }
+               
+            }
+
+            Console.WriteLine($"Time needed: {count}h.");
+
+
+        }
+    }
+}
