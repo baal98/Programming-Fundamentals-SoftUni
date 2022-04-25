@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Moving_Target
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> list = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+            string command = string.Empty;
+            int indexCommand = 0;
+            int valueCommand = 0;
+
+            while (command != "End")
+            {
+                List<string> commandList = Console.ReadLine().Split().ToList();
+                command = commandList[0];
+                if (command == "End")
+                {
+                    Console.WriteLine(string.Join("|", list));
+                    break;
+                }
+                indexCommand = int.Parse(commandList[1]);
+                valueCommand = int.Parse(commandList[2]);
+                if (command == "Shoot")
+                {
+                    if (indexCommand >= 0 && indexCommand < list.Count)
+                    {
+                        list[indexCommand] -= valueCommand;
+                        if (list[indexCommand] <= 0)
+                        {
+                            list.RemoveAt(indexCommand);
+                        }
+                    }
+                    continue;
+                }
+                if (command == "Add")
+                {
+                    if (indexCommand >= 0 && indexCommand < list.Count)
+                    {
+                        list.Insert(indexCommand, valueCommand);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid placement!");
+                    }
+                    continue;
+                }
+                if (command == "Strike")
+                {
+                    if (indexCommand - valueCommand >= 0 &&
+                        indexCommand + valueCommand < list.Count)
+                    {
+                        list.RemoveRange(indexCommand - valueCommand, 1 + 2 * valueCommand);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Strike missed!");
+                    }
+                    continue;
+                }
+            }
+        }
+    }
+}
