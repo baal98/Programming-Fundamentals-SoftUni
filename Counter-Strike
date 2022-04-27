@@ -1,0 +1,41 @@
+using System;
+
+namespace Counter_Strike
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int energy = int.Parse(Console.ReadLine());
+            string command = string.Empty;
+            int counter = 0;
+
+            while (command != "End of battle")
+            {
+                command = Console.ReadLine();
+                if (command == "End of battle")
+                {
+                    Console.WriteLine($"Won battles: {counter}. Energy left: {energy}");
+                    break;
+                }
+                counter++;
+                int input = int.Parse(command);
+
+                if (input <= energy)
+                {
+                    energy -= input;
+                }
+                else
+                {
+                    Console.WriteLine($"Not enough energy! Game ends with {counter - 1} won battles and {energy} energy");
+                    break;
+                }
+
+                if (counter % 3 == 0)
+                {
+                    energy += counter;
+                }
+            }
+        }
+    }
+}
