@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Shoot_for_the_Win
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> input = Console.ReadLine().Split().Select(int.Parse).ToList();
+            string command = string.Empty;
+            int counter = 0;
+            int element = 0;
+            while (command != "End")
+            {
+                command = Console.ReadLine();
+                if (command == "End")
+                {
+                    Console.WriteLine($"Shot targets: {counter} -> {string.Join(" ", input)}");
+                    break;
+                }
+                int target = int.Parse(command);
+                if (target >= 0 && target <= input.Count - 1)
+                {
+                    element = input[target];
+                    input[target] = -1;
+                    for (int j = 0; j < input.Count; j++)
+                    {
+                        if (input[j] == -1)
+                        {
+                            continue;
+                        }
+                        else if (element < input[j])
+                        {
+                            input[j] -= element;
+                        }
+                        else
+                        {
+                            input[j] += element;
+                        }
+                    }
+                    counter++;
+                }
+            }
+        }
+    }
+}
