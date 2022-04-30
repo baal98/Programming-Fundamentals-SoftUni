@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Shopping_List
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> list = Console.ReadLine().Split('!').ToList();
+
+            string input = "";
+            string newItem = "";
+
+            while ((input = Console.ReadLine()) != "Go Shopping!")
+            {
+                List<string> newList = input.Split().ToList();
+
+                if (newList.Count == 3)
+                {
+                    newItem = newList[2];
+                }
+
+                string command = newList[0];
+                string item = newList[1];
+                bool isExist = false;
+
+                if (command == "Urgent")
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (item == list[i])
+                        {
+                            isExist = true;
+                            break;
+                        }
+                    }
+                    if (isExist)
+                    {
+                        continue;
+                    }
+                    list.Insert(0, item);
+                }
+                if (command == "Unnecessary")
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (item == list[i])
+                        {
+                            list.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+                if (command == "Correct")
+                {
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (item == list[i])
+                        {
+                            list.RemoveAt(i);
+                            list.Insert(i, newItem);
+                            break;
+                        }
+                    }
+                }
+                if (command == "Rearrange"
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (item == list[i])
+                        {
+                            list.RemoveAt(i);
+                            list.Add(item);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine(string.Join(", ", list));
+
+        }
+    }
+}
