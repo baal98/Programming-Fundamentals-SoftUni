@@ -1,0 +1,126 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Need_for_Speed_III
+{
+    class Car
+    {
+        public Car(string name, int distance, int fuel)
+        {
+            this.Name = name;
+            this.Distance = distance;
+            this.Fuel = fuel;
+        }
+        public string Name { get; set; }
+        public int Distance { get; set; }
+        public int Fuel { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int numberOfCars = int.Parse(Console.ReadLine());
+
+            Dictionary<string, Car> cars = new Dictionary<string, Car>();
+
+            for (int i = 1; i <= numberOfCars; i++)
+            {
+                List<string> list = Console.ReadLine().Split('|', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string name = list[0];
+                int distance = int.Parse(list[1]);
+                int fuel = int.Parse(list[2]);
+
+                Car car = new Car(name, distance, fuel);
+                if (!cars.ContainsKey(name))
+                {
+                    cars[name] = car;
+                }
+            }
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "Stop")
+            {
+                List<string> inputs = command.Split(" : ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string actions = inputs[0];
+
+                if (actions == "Drive")
+                {
+                    string name = inputs[1];
+                    int distance = int.Parse(inputs[2]);
+                    int fuel = int.Parse (inputs[3]);
+
+                    if (fuel <= cars[name].Fuel)
+                    {
+                        cars[name].Distance += distance;
+                        cars[name].Fuel -= fuel;
+                        Console.WriteLine($"{cars[name].Name} driven for {distance} kilometers. {fuel} liters of fuel consumed.");
+                        if (cars[name].Distance >= 100000)
+                        {
+                            Console.WriteLine($"Time to sell the {name}!");
+                            cars.Remove(name);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Not enough fuel to make that ride");
+                    }
+
+                }
+                else if (actions == "Refuel")
+                {
+                    string name = inputs[1];
+                    int fuel = int.Parse(inputs[2]);
+
+                    if (cars.ContainsKey(name))
+                    {
+                        if ((fuel + cars[name].Fuel) > 75)
+                        {
+                            fuel = 75 - cars[name].Fuel;
+                            Console.WriteLine($"{name} refueled with {fuel} liters");
+                            cars[name].Fuel = 75;
+                        }
+                        else
+                        {
+                            cars[name].Fuel += fuel;
+                            Console.WriteLine($"{name} refueled with {fuel} liters");
+                        }
+
+                    }
+
+                }
+                else if (actions == "Revert")
+                {
+                    string name = inputs[1];
+                    int kilometers = int.Parse(inputs[2]);
+
+                    if (cars.ContainsKey(name))
+                    {
+                        cars[name].Distance -= kilometers;
+                        if (cars[name].Distance >= 10000)
+                        {
+                            Console.WriteLine($"{name} mileage decreased by {kilometers} kilometers");
+                        }
+                        else
+                        {
+                            cars[name].Distance = 10000;
+                        }
+                    }
+
+
+
+                }
+            }
+
+            foreach (var car in cars)
+            {
+                Console.WriteLine($"{car.Key} -> Mileage: {car.Value.Distance} kms, Fuel in the tank: {car.Value.Fuel} lt.");
+            }
+        }
+    }
+}
