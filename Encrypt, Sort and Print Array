@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int n = int.Parse(Console.ReadLine());
+            string command = "";
+            List<int> vs = new List<int>();  
+            while (n != 0)
+            {
+                command = Console.ReadLine();
+                char[] ch = command.ToCharArray();
+                int sum = 0;
+                for (int i = 0; i < command.Length; i++)
+                {
+                    if (ch[i] == 'a' || ch[i] == 'o' || ch[i] == 'u' || ch[i] == 'e'
+                        || ch[i] == 'i' || ch[i] == 'A' || ch[i] == 'O' || ch[i] == 'U' || ch[i] == 'E'
+                        || ch[i] == 'I')
+                    {
+                        sum += Convert.ToInt32(ch[i]) * command.Length;
+                    }
+                    else
+                    {
+                        sum += Convert.ToInt32(ch[i]) / command.Length;
+                    }
+
+                }
+                vs.Add(sum);
+                n--;
+            }
+            vs.Sort();
+            foreach (var item in vs)
+            {
+                Console.WriteLine(item);
+            }
+
+        }
+    }
+}
