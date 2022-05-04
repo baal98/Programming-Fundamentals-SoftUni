@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+
+namespace Fibonacci
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int len = int.Parse(Console.ReadLine());
+            int a = 0, b = 1, c = 0;
+            List<int> newList = new List<int> { a, b };
+            for (int i = 2; i < len; i++)
+            {
+                c = a + b;
+                a = b;
+                b = c;
+                newList.Add(c);
+            }
+            Console.WriteLine(newList[newList.Count - 1] + newList[newList.Count - 2]);
+        }
+    }
+}
