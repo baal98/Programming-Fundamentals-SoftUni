@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+
+namespace ConsoleApp13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> input = Console.ReadLine().Split().Select(int.Parse).ToList();
+            int element = 0;
+            int maxSequence = 0;
+            bool isValid = false;
+            for (int i = 0; i < input.Count; i++)
+            {
+                int sequence = 1;
+                for (int j = i + 1; j < input.Count; j++)
+                {
+                    if (input[i] == input[j]) //2 1 1 2 3 3 2 2 2 1
+                    {
+                        sequence++;
+                        if (sequence > maxSequence)
+                        {
+                            maxSequence = sequence;
+                            element = input[i];
+                            isValid = true;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+            }
+            if (isValid)
+            {
+                for (int i = 0; i < maxSequence; i++)
+                {
+                    Console.Write($"{element} ");
+                }
+            }
+
+        }
+    }
+}
