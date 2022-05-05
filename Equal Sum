@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+
+namespace ConsoleApp13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> input = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+            int element = 0;
+            bool isEqual = false;
+
+            for (int i = 0; i < input.Count; i++)
+            {
+                int leftSum = 0;
+                int rightSum = 0;
+                for (int j = 0; j < i; j++)
+                {
+                    leftSum += input[j];
+                }
+                for (int j = i + 1; j < input.Count; j++)
+                {
+                    rightSum += input[j];
+                }
+                if (leftSum == rightSum)
+                {
+                    element = i;
+                    isEqual = true;
+                    break;
+                }
+            }
+            if (isEqual)
+            {
+                Console.WriteLine(element);
+            }
+            else
+            {
+                Console.WriteLine("no");
+            }
+
+        }
+    }
+}
