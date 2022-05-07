@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+
+namespace ConsoleApp13
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> input = Console.ReadLine().Split().Select(int.Parse).ToList();
+            List<int> input1 = new List<int>();
+            int counter = 0;
+            for (int i = 0; i < input.Count; i++)
+            {
+                counter = 0;
+                for (int j = i + 1; j < input.Count; j++)
+                {
+                    if (input[i] > input[j])
+                    {
+                        counter += 1;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (counter == input.Count - i - 1)
+                {
+                    input1.Add(input[i]);
+                }
+            }
+            foreach (var item in input1)
+            {
+                Console.Write($"{item} ");
+            }
+        }
+    }
+}
