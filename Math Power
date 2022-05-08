@@ -1,0 +1,26 @@
+using System;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            double a = double.Parse(Console.ReadLine());
+            double pow = double.Parse(Console.ReadLine());
+            Console.WriteLine(MathPow(a, pow));
+
+            static double MathPow(double x, double y)
+            {
+                double result = 1d;
+                for (int i = 0; i < y; i++)
+                {
+                    result *= x;
+                }
+                return result;
+            }
+
+
+        }
+    }
+}
