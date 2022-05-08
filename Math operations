@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            double x = double.Parse(Console.ReadLine());
+            string sign = Console.ReadLine();
+            double y = double.Parse(Console.ReadLine());
+            double result = 0;
+            result = Calculate(x, sign, y, result);
+            Console.WriteLine(result);
+        }
+
+        private static double Calculate(double x, string sign, double y, double result)
+        {
+            switch (sign)
+            {
+                case "+":
+                    result = x + y;
+                    break;
+                case "-":
+                    result = x - y;
+                    break;
+                case "*":
+                    result = x * y;
+                    break;
+                case "/":
+                    result = x / y;
+                    break;
+            }
+
+            return result;
+        }
+    }
+}
