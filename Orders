@@ -1,0 +1,36 @@
+using System;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string product = Console.ReadLine();
+            int number = int.Parse(Console.ReadLine());
+            Orders(product, number);
+        }
+
+        private static void Orders(string product, int number)
+        {
+            double price = 0;
+            if (product == "coffee")
+            {
+                price = number * 1.50;
+            }
+            else if (product == "water")
+            {
+                price = number * 1.00;
+            }
+            else if (product == "coke")
+            {
+                price = number * 1.40;
+            }
+            else if (product == "snacks")
+            {
+                price = number * 2.00;
+            }
+            Console.WriteLine($"{price:F2}");
+        }
+    }
+}
