@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Shopping_List
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string input = Console.ReadLine();
+
+            string middles = MiddleChar(input);
+            Console.WriteLine(middles);
+
+            static string MiddleChar(string input)
+            {
+                for (int i = 0; i < input.Length; i++)
+                {
+                    if (input.Length % 2 == 0)
+                    {
+                        return $"{input[(input.Length / 2) - 1]}{input[input.Length / 2]}";
+                    }
+
+
+                }
+
+
+                return $"{input[input.Length / 2]}";
+            }
+
+
+        }
+    }
+}
