@@ -1,0 +1,35 @@
+using System;
+
+namespace ConsoleApp1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command = Console.ReadLine();
+            int number = int.Parse(Console.ReadLine());
+            int number1 = int.Parse(Console.ReadLine());
+            Calculation(command, number, number1);
+        }
+
+        private static void Calculation(string command, int number, int number1)
+        {
+            if (command == "add")
+            {
+                Console.WriteLine(number + number1);
+            }
+            else if (command == "multiply")
+            {
+                Console.WriteLine(number * number1);
+            }
+            else if (command == "subtract")
+            {
+                Console.WriteLine(number - number1);
+            }
+            else if (command == "divide")
+            {
+                Console.WriteLine(number / number1);
+            }
+        }
+    }
+}
