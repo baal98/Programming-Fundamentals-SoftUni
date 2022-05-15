@@ -1,0 +1,31 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Shopping_List
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int firstNumber = int.Parse(Console.ReadLine());
+            int secondNumber = int.Parse(Console.ReadLine());
+            int thirdNumber = int.Parse(Console.ReadLine());
+
+            int sum = Sum(firstNumber, secondNumber);
+            int result = Substract(sum, thirdNumber);
+            Console.WriteLine(result);
+
+
+                static int Sum(int first, int second)
+            {
+                return first + second;
+            }
+            static int Substract(int first, int second)
+            {
+                return first - second;
+            }
+
+        }
+    }
+}
