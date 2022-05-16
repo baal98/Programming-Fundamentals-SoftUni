@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> list = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+            string command = Console.ReadLine();
+
+            bool hasChanges = false;
+
+            while (command != "end")
+            {
+                List<string> input = command.Split().ToList();
+                string action = input[0];
+
+                if (action == "Add")
+                {
+                    int number = int.Parse(input[1]);
+                    list.Add(number);
+                    hasChanges = true;
+
+                }
+                else if (action == "Remove")
+                {
+                    int number = int.Parse(input[1]);
+                    list.Remove(number);
+                    hasChanges = true;
+
+                }
+                else if (action == "RemoveAt")
+                {
+                    int index = int.Parse(input[1]);
+                    list.RemoveAt(index);
+                    hasChanges = true;
+
+                }
+                else if (action == "Insert")
+                {
+                    int number = int.Parse(input[1]);
+                    int index = int.Parse(input[2]);
+                    list.Insert(index, number);
+                    hasChanges = true;
+
+                }
+                else if (action == "Contains")
+                {
+                    int number = int.Parse(input[1]);
+                    if(list.Contains(number))
+                    {
+                        Console.WriteLine("Yes");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No such number");
+                    }
+                }
+                else if (action == "PrintEven")
+                {
+                    List<int> result = list.FindAll(x => x % 2 == 0);
+                    Console.WriteLine(string.Join(" ", result));
+
+                }
+                else if (action == "PrintOdd")
+                {
+                    List<int> result = list.FindAll(x => x % 2 != 0);
+                    Console.WriteLine(string.Join(" ", result));
+
+                }
+                else if (action == "GetSum")
+                {
+                    int result = list.Sum();
+                    Console.WriteLine(string.Join(" ", result));
+
+                }
+                else if (action == "Filter")
+                {
+                    var condition = input[1];
+                    int number = int.Parse(input[2]);
+
+                    if (condition == "<")
+                    {
+                        List<int> result = list.FindAll(x => x < number);
+                        Console.WriteLine(string.Join(" ", result));
+                    }
+                    else if (condition == ">")
+                    {
+                        List<int> result = list.FindAll(x => x > number);
+                        Console.WriteLine(string.Join(" ", result));
+                    }
+                    else if (condition == ">=")
+                    {
+                        List<int> result = list.FindAll(x => x >= number);
+                        Console.WriteLine(string.Join(" ", result));
+                    }
+                    else if (condition == "<=")
+                    {
+                        List<int> result = list.FindAll(x => x <= number);
+                        Console.WriteLine(string.Join(" ", result));
+                    }
+                    else
+                    {
+                        Console.WriteLine(string.Join(" ", list));
+                    }
+
+                }
+
+                command = Console.ReadLine();
+            }
+            if (hasChanges)
+            {
+                Console.WriteLine(string.Join(" ", list));
+            }
+        }
+    }
+}
