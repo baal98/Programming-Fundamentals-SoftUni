@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<double> list = Console.ReadLine().Split().Select(double.Parse).ToList();
+            List<double> newList = new List<double>();
+            double sum = 0;
+
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                if (list[i] == list[i + 1])
+                {
+                    sum = list[i] + list[i + 1];
+                    list.Insert(i, sum);
+                    list.RemoveRange(i + 1, 2);
+                    i = -1;
+                }
+            }
+
+            Console.WriteLine(String.Join(" ", list));
+
+        }
+    }
+}
