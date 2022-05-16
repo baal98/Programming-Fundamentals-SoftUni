@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> list = Console.ReadLine().Split().Select(int.Parse).ToList();
+            List<int> newList = new List<int>();
+
+            int sum = 0;
+
+            if (list.Count % 2 == 0)
+            {
+                sum = SumItems(list, newList, sum);
+
+            }
+            else
+            {
+                sum = SumItems(list, newList, sum);
+                newList.Add(list[(list.Count / 2)]);
+            }
+
+            Console.WriteLine(String.Join(" ", newList));
+
+        }
+
+        private static int SumItems(List<int> list, List<int> newList, int sum)
+        {
+            for (int i = 0; i < (list.Count / 2); i++)
+            {
+                sum = list[i] + list[list.Count - 1 - i];
+                newList.Add(sum);
+            }
+
+            return sum;
+        }
+    }
+}
