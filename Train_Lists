@@ -1,0 +1,47 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> list = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+            int maxCapacityWagon = int.Parse(Console.ReadLine());
+
+            string command = Console.ReadLine();
+
+            while (command != "end")
+            {
+                List<string> input = command.Split().ToList();
+                string action = input[0];
+
+                if (action == "Add")
+                {
+                    int passengers = int.Parse(input[1]);
+                    list.Add(passengers);
+                }
+                else
+                {
+                    int passengers = int.Parse(action);
+
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i] + passengers <= maxCapacityWagon )
+                        {
+                            list[i] += passengers;
+                            break;
+                        }
+                    }
+                }
+
+
+                command = Console.ReadLine();
+            }
+            Console.WriteLine(string.Join(" ", list));
+        }
+    }
+}
