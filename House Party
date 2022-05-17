@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int commands = int.Parse(Console.ReadLine());
+
+            string name = "";
+
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < commands; i++)
+            {
+                string command = Console.ReadLine();
+                List<string> input = command.Split().ToList();
+                name = input[0];
+
+                if (command.Contains("is going!"))
+                {
+                    if (!list.Contains(name))
+                    {
+                        list.Add(name);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{name} is already in the list!");
+                    }
+                }
+                else if(command.Contains("is not going!"))
+                {
+                    if (list.Contains(name))
+                    {
+                        list.Remove(name);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{name} is not in the list!");
+                    }
+                }
+
+            }
+
+            foreach (var item in list)
+            {
+                Console.WriteLine(item);
+            }
+        }
+    }
+}
