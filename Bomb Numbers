@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> list = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+
+            List<int> command = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+            int bomb = command[0];
+            int power = command[1];
+
+            while (list.Contains(bomb))
+            {
+                int powerMin = 0;
+                int powerMax = 0;
+
+                if (list.IndexOf(bomb) - power < 0)
+                {
+                    powerMin = list.IndexOf(bomb);
+                    list.RemoveRange(0, powerMin);
+                }
+                else
+                {
+                    list.RemoveRange(list.IndexOf(bomb) - power, power);
+                }
+                if (list.IndexOf(bomb) + power >= list.Count)
+                {
+                    powerMax = list.Count - 1 - list.IndexOf(bomb);
+                    list.RemoveRange(list.IndexOf(bomb) + 1, powerMax);
+                }
+                else
+                {
+                    list.RemoveRange(list.IndexOf(bomb) + 1, power);
+                }
+                list.Remove(bomb);
+
+            }
+            int sum = list.Sum();
+            Console.WriteLine(string.Join(" ", sum));
+        }
+
+    }
+}
