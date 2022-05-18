@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> player1 = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            List<int> player2 = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            int tempPosition = 0;
+
+            while (player1.Count != 0 && player2.Count != 0)
+            {
+                if (player1[0] > player2[0])
+                {
+                    player1.Add(player2[0]);
+                    tempPosition = player1[0];
+                    player1.RemoveAt(0);
+                    player1.Add(tempPosition);
+                    player2.RemoveAt(0);
+                }
+                else if (player2[0] > player1[0])
+                {
+                    player2.Add(player1[0]);
+                    tempPosition = player2[0];
+                    player2.RemoveAt(0);
+                    player2.Add(tempPosition);
+                    player1.RemoveAt(0);
+                }
+                else
+                {
+                    player1.RemoveAt(0);
+                    player2.RemoveAt(0);
+                }
+            }
+            if (player1.Sum() > player2.Sum())
+            {
+                Console.WriteLine($"First player wins! Sum: {player1.Sum()}");
+            }
+            else if (player1.Sum() < player2.Sum())
+            {
+                Console.WriteLine($"Second player wins! Sum: {player2.Sum()}");
+            }
+        }
+
+    }
+}
