@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> input = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            string command = "";
+
+            while (command != "3:1")
+            {
+                List<string> commandList = command.Split().ToList();
+                string action = commandList[0];
+
+                if (action == "merge")
+                {
+                    if (input.Count == 1)
+                    {
+                        command = Console.ReadLine();
+                        continue;
+                    }
+                    int startIndex = int.Parse(commandList[1]);
+                    int endIndex = int.Parse(commandList[2]);
+                    List<string> output = new List<string>();
+                    if (startIndex > endIndex)
+                    {
+                        int temp = startIndex;
+                        startIndex = endIndex;
+                        endIndex = temp;
+                    }
+                    if (startIndex < 0)
+                    {
+                        startIndex = 0;
+                    }
+                    if (startIndex > input.Count)
+                    {
+                        startIndex = input.Count - 1;
+                        endIndex = input.Count;
+                    }
+                    if (endIndex >= input.Count)
+                    {
+                        endIndex = input.Count - 1;
+                    }
+                    if (endIndex < 0)
+                    {
+                        endIndex = 0;
+                        startIndex = 0;
+                    }
+                    if (startIndex < 0 && endIndex < 0 && input.Count != 0)
+                    {
+                        startIndex = 0;
+                        endIndex = 1;
+                    }
+
+
+                    for (int i = 0; i < input.Count; i++)
+                    {
+                        string temp = "";
+                        if (startIndex == i)
+                        {
+
+                            for (int j = startIndex; j <= endIndex; j++)
+                            {
+                                temp += input[j];
+                            }
+                            input.RemoveRange(startIndex, (endIndex - startIndex + 1));
+                            input.Insert(startIndex, temp);
+                            break;
+                        }
+                    }
+                }
+                if (action == "divide")
+                {
+                    int index = int.Parse(commandList[1]);
+                    int partitions = int.Parse(commandList[2]);
+
+                    string word = input[index];
+                    List<string> newListString = new List<string>();
+
+
+                    int partitionLength = word.Length / partitions;
+                    int partitionReminder = word.Length % partitions;
+                    int lastPartitionLength = partitionLength + partitionReminder;
+
+                    for (int i = 0; i < partitions; i++)
+                    {
+                        char[] temp;
+
+                        if (i == partitions - 1)
+                        {
+                            temp = word.Skip(i * partitionLength).Take(lastPartitionLength).ToArray();
+                        }
+                        else
+                        {
+                            temp = word.Skip(i * partitionLength).Take(partitionLength).ToArray();
+                        }
+
+                        newListString.Add(new string(temp));
+                    }
+                    input.RemoveAt(index);
+                    input.InsertRange(index, newListString);
+                }
+                command = Console.ReadLine();
+            }
+            Console.WriteLine(string.Join(" ", input));
+        }
+    }
+}
