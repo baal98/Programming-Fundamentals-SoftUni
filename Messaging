@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> numbers = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+
+            string message = Console.ReadLine();
+
+            List<char> chars = message.ToList();
+
+            List<char> messages = new List<char>();
+
+            List<int> digits = new List<int>();
+
+            for (int i = 0; i < numbers.Count; i++)
+            {
+                int sum = 0;
+
+                while (numbers[i] != 0)
+                {
+                    sum += numbers[i] % 10;
+                    numbers[i] /= 10;
+                }
+                digits.Add(sum);
+            }
+            for (int j = 0; j < digits.Count; j++)
+            {
+                if (digits[j] >= chars.Count)
+                {
+                    while (digits[j] >= chars.Count)
+                    {
+                        digits[j] -= chars.Count;
+                    }
+                }
+
+                else if (digits[j] < 0)
+                {
+                    while (digits[j] < 0)
+                    {
+                        digits[j] += chars.Count;
+                    }
+                }
+                messages.Add(chars[digits[j]]);
+                chars.Remove(chars[digits[j]]);
+            }
+
+            Console.WriteLine(String.Join("", messages));
+        }
+    }
+}
