@@ -1,0 +1,79 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Mixed_Up_Lists
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<int> firstList = Console.ReadLine()
+                .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse)
+                .ToList();
+            List<int> secondList = Console.ReadLine()
+                .Split(" ", StringSplitOptions.RemoveEmptyEntries)
+                .Select(int.Parse)
+                .ToList();
+            List<int> thirdList = new List<int>();
+            int firstNumber = 0;
+            int secondNumber = 0;
+
+            if (firstList.Count > secondList.Count)
+            {
+                secondList.Reverse();
+
+                for (int i = 0; i < secondList.Count * 2; i++)
+                {
+                    if (secondList.Count * 2 == thirdList.Count)
+                    {
+                        break;
+                    }
+                    thirdList.Add(firstList[i]);
+                    thirdList.Add(secondList[i]);
+                }
+                firstList.RemoveRange(0, firstList.Count - 2);
+                firstNumber = firstList[0];
+                secondNumber = firstList[1];
+            }
+            else
+            {
+                secondList.Reverse();
+
+                for (int i = 0; i < firstList.Count * 2; i++)
+                {
+                    if (firstList.Count * 2 == thirdList.Count)
+                    {
+                        break;
+                    }
+                    thirdList.Add(secondList[i]);
+                    thirdList.Add(firstList[i]);
+                }
+                secondList.RemoveRange(0, secondList.Count - 2);
+                firstNumber = secondList[0];
+                secondNumber = secondList[1];
+            }
+
+            thirdList.Sort();
+            List<int> resultList = new List<int>();
+
+            if (firstNumber > secondNumber)
+            {
+                int temp = firstNumber;
+                firstNumber = secondNumber;
+                secondNumber = temp;
+            }
+
+            for (int i = 0; i < thirdList.Count; i++)
+            {
+                if (thirdList[i] > firstNumber && thirdList[i] < secondNumber)
+                {
+                    resultList.Add(thirdList[i]);
+                }
+
+            }
+            Console.WriteLine(string.Join(" ", resultList));
+        }
+    }
+}
