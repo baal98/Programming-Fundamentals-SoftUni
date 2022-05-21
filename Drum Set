@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            double savings = double.Parse(Console.ReadLine());
+
+            List<int> list = Console.ReadLine().Split().Select(int.Parse).ToList();
+
+            List<int> duplicateList = new List<int>(list);
+            
+            string command = string.Empty;
+
+            while (command != "Hit it again, Gabsy!")
+            {
+                command = Console.ReadLine();
+
+                if (command == "Hit it again, Gabsy!")
+                {
+                    break;
+                }
+                int action = int.Parse(command);
+
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i] - action <= 0)
+                    {
+                        double tempSavings = savings;
+                        savings -= duplicateList[i] * 3;
+                        if (savings <= 0)
+                        {
+                            savings = tempSavings;
+                            list.RemoveAt(i);
+                            duplicateList.RemoveAt(i);
+                            i--;
+
+                            continue;
+                        }
+                        list[i] = duplicateList[i];
+                        continue;
+                    }
+                    
+                    list[i] -= action;
+                }
+                
+            }
+            Console.WriteLine(String.Join(" ", list));
+            Console.WriteLine($"Gabsy has {savings:F2}lv.");
+
+        }
+    }
+}
