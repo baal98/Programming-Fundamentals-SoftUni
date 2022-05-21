@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Take_Skip_Rope
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string input = Console.ReadLine();
+            List<int> numbersList = new List<int>();
+            List<char> chars = input.ToList();
+            int charsCount = chars.Count;
+            List<char> outputChar = new List<char>();
+            List<int> skipList = new List<int>();
+            List<int> takeList = new List<int>();
+
+            for (int i = 0; i < charsCount; i++)
+            {
+                if ((int)chars[i] >= 48 && (int)chars[i] <= 57)
+                {
+                    numbersList.Add((int)Char.GetNumericValue(chars[i]));
+                }
+                if ((int)chars[i] < 48 || (int)chars[i] > 57)
+                {
+                    outputChar.Add(chars[i]);
+                }
+            }
+            for (int i = 0; i < numbersList.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    takeList.Add(numbersList[i]);
+                }
+                else
+                {
+                    skipList.Add(numbersList[i]);
+                }
+            }
+            List<string> decrypted = new List<string>();
+            for (int i = 0; i < skipList.Count; i++)
+            {
+                bool isNull = true;
+
+                if (takeList[i] > 0)
+                {
+                    isNull = false;
+
+                    for (int j = 0; j < takeList[i]; j++)
+                    {
+                        if (j >= outputChar.Count)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            decrypted.Add(outputChar[j].ToString());
+                        }
+                    }
+                    for (int k = 0; k < skipList[i] + takeList[i]; k++)
+                    {
+                        if (outputChar.Count == 0)
+                        {
+                            break;
+                        }
+                        outputChar.RemoveAt(0);
+                    }
+                }
+
+                if (isNull)
+                {
+                    for (int k = 0; k < skipList[i]; k++)
+                    {
+                        outputChar.RemoveAt(0);
+                    }
+                }
+
+            }
+
+            Console.WriteLine(String.Join("", decrypted));
+
+        }
+    }
+}
