@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Students
+{
+    internal class Student
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Age { get; set; }
+        public string HomeTown { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Student> students = new List<Student>();
+
+            string commands = string.Empty;
+
+            while (commands != "end")
+            {
+                commands = Console.ReadLine();
+                if (commands == "end")
+                {
+                    break;
+                }
+                List<string> inputs = commands.Split(" ").ToList();
+
+                string firstName = inputs[0];
+                string lastName = inputs[1];
+                int age = int.Parse(inputs[2]);
+                string homeTown = inputs[3];
+
+                Student student = new Student();
+
+                student.FirstName = firstName;
+                student.LastName = lastName;
+                student.Age = age;
+                student.HomeTown = homeTown;
+                students.Add(student);
+            }
+
+            string cityName = Console.ReadLine();
+
+            List<Student> filteredCity = students.Where(s => s.HomeTown == cityName).ToList();
+
+            foreach (Student student in filteredCity)
+            {
+                Console.WriteLine($"{student.FirstName} {student.LastName} is {student.Age} years old.");
+            }
+
+
+        }
+    }
+}
