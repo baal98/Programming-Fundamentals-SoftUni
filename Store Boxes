@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Store_Boxes
+{
+    class Item
+    {
+        public Item(string itemName, double itemPrice)
+        {
+            this.ItemName = itemName;
+            this.ItemPrice = itemPrice;
+        }
+        public string ItemName { get; set; }
+
+        public double ItemPrice { get; set; }
+
+    }
+    class Box
+    {
+        public Box(string serialNumber, string boxItem, int itemQuantity, double boxPrice)
+        {
+            this.SerialNumber = serialNumber;
+            this.BoxItem = boxItem;
+            this.ItemQuantity = itemQuantity;
+            this.BoxPrice = boxPrice;
+        }
+        
+        public string SerialNumber { get; set; }
+        public string BoxItem { get; set; }
+        public int ItemQuantity { get; set; }
+        public double BoxPrice { get; set; }
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<Box> boxes = new List<Box>();
+            List<Item> items = new List<Item>();
+            string command;
+
+            while ((command = Console.ReadLine()) != "end")
+            {
+                List<string> list = command.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string serialNumber = list[0];
+                string itemName = list[1];
+                int itemQuantity = Convert.ToInt32(list[2]);
+                double itemPrice = Convert.ToDouble(list[3]);
+
+                Item item = new Item(itemName, itemPrice);
+                Box box = new Box(serialNumber, itemName, itemQuantity, itemPrice * itemQuantity);
+
+                items.Add(item);
+                boxes.Add(box);
+            }
+
+            List<Box> sortedBoxes = boxes.OrderByDescending(x => x.BoxPrice).ToList();
+            foreach (Box box in sortedBoxes)
+            {
+                Console.WriteLine(box.SerialNumber);
+                Console.WriteLine($"-- {box.BoxItem} - ${(box.BoxPrice / box.ItemQuantity):F2}: {box.ItemQuantity}");
+                Console.WriteLine($"-- ${box.BoxPrice:F2}");
+            }
+        }
+    }
+}
