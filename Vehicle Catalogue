@@ -1,0 +1,105 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Vehicle_Catalogue
+{
+    class Truck
+    {
+        public Truck(string model, string brand, double weigth)
+        {
+            this.Model = model;
+            this.Brand = brand;
+            this.Weigth = weigth;
+        }
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public  double Weigth { get; set; }
+
+    }
+    class Car
+    {
+        public Car(string model, string brand, int horsePower)
+        {
+            this.Model= model;
+            this.Brand= brand;
+            this.HorsePower= horsePower;
+        }
+        public string Model { get; set; }
+        public string Brand { get; set; }
+        public int HorsePower { get; set; }
+    }
+    class Catalog
+    {
+        public Catalog(List<Truck> trucks, List<Car> cars)
+        {
+            this.Trucks = new List<Truck>();
+            this.Cars = new List<Car>();
+        }
+        public List<Car> Cars { get; set;}
+        public List<Truck> Trucks { get; set;}
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command;
+            List<Car> cars = new List<Car>();
+            List<Truck> trucks = new List<Truck>();
+
+            List<string> catalogTruksAndCars = new List<string>();
+            
+            while ((command = Console.ReadLine()) != "end")
+            {
+                List<string> inputs = command.Split('/', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string type = inputs[0];
+
+                if (type == "Car")
+                {
+                    string brand = inputs[1];
+                    string model = inputs[2];
+                    int horsePower = int.Parse(inputs[3]);
+
+                    Car car = new Car(model, brand, horsePower);
+
+                    cars.Add(car);
+                }
+                else
+                {
+                    string brand = inputs[1];
+                    string model = inputs[2];
+                    double weight = double.Parse(inputs[3]);
+
+                    Truck truck = new Truck(model, brand, weight);
+
+                    trucks.Add(truck);
+                }
+            }
+            List<Car> sortedCars = cars.OrderBy(x => x.Brand).ToList();
+            List<Truck> sortedTruks = trucks.OrderBy(x => x.Brand).ToList();
+
+            Catalog catalog = new Catalog(sortedTruks, sortedCars);
+            catalog.Trucks.AddRange(sortedTruks);
+            catalog.Cars.AddRange(sortedCars);
+
+            if (catalog.Cars.Any())
+            {
+                Console.WriteLine("Cars:");
+                foreach (var car in catalog.Cars)
+                {
+                    Console.WriteLine($"{car.Brand}: {car.Model} - {car.HorsePower}hp");
+                }
+            }
+            
+            if (catalog.Trucks.Any())
+            {
+                Console.WriteLine("Trucks:");
+                foreach (var truck in catalog.Trucks)
+                {
+                    Console.WriteLine($"{truck.Brand}: {truck.Model} - {truck.Weigth}kg");
+                }
+            }
+        }
+    }
+}
