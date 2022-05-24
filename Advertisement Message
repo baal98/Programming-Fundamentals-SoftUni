@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Advertisement_Message
+{
+    public class Message
+    {
+        public Message(string phrase, string eventt, string author, string city)
+        {
+            this.Phrases = phrase;
+            this.Events = eventt;
+            this.Authors = author;
+            this.Cities = city;
+        }
+        public string Phrases { get; set; }
+        public string Events { get; set; }
+        public string Authors { get; set; }
+        public string Cities { get; set; }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int number = Convert.ToInt32(Console.ReadLine());
+
+            List<string> phrases = new List<string>()
+            {
+                "Excellent product.", "Such a great product.", "I always use that product.", "Best product of its category.", "Exceptional product.", "I can’t live without this product."
+            };
+            List<string> events = new List<string>()
+            {
+                "Now I feel good.", "I have succeeded with this product.", "Makes miracles. I am happy of the results!", "I cannot believe but now I feel awesome.", "Try it yourself, I am very satisfied.", "I feel great!"
+            };
+            List<string> authors = new List<string>()
+            {
+                "Diana", "Petya", "Stella", "Elena", "Katya", "Iva", "Annie", "Eva"
+            };
+            List<string> cities = new List<string>()
+            {
+                "Burgas", "Sofia", "Plovdiv", "Varna", "Ruse"
+            };
+
+            List<Message> messages = new List<Message>().ToList();
+
+            Random rand = new Random();
+
+            for (int i = 1; i <= number; i++)
+            {
+                phrases[i] = phrases[rand.Next(phrases.Count)];
+                events[i] = events[rand.Next(events.Count)];
+                authors[i] = authors[rand.Next(authors.Count)];
+                cities[i] = cities[rand.Next(cities.Count)];
+                Message message = new Message(phrases[i], events[i], authors[i], cities[i]);
+
+                messages.Add(message);
+            }
+            foreach (Message message in messages)
+            {
+                Console.WriteLine($"{message.Phrases} {message.Events} {message.Authors} – {message.Cities}.");
+            }
+
+        }
+    }
+}
