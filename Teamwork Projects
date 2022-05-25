@@ -1,0 +1,113 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Teamwork_Projects
+{
+    internal class Program
+    {
+        class Teams
+        {
+            public Teams(string teamName, string creator)
+            {
+                this.TeamName = teamName;
+                this.Creator = creator;
+                this.Members = new List<string>();
+            }
+            public string TeamName { get; set; }
+            public string Creator { get; set; }
+            public List<string> Members { get; set; }
+            public void AddMembers(string members)
+            {
+               this.Members.Add(members);
+            }
+        }
+        static void Main(string[] args)
+        {
+            int numberOfTeams = int.Parse(Console.ReadLine());
+
+            List<string> input = new List<string>();
+
+            List<Teams> teams = new List<Teams>();
+            string creator, teamName;
+
+            List<string> members = new List<string>();
+
+            for (int i = 1; i <= numberOfTeams; i++)
+            {
+                input = Console.ReadLine().Split('-', StringSplitOptions.RemoveEmptyEntries).ToList();
+                creator = input[0];
+                teamName = input[1];
+
+                if (teams.Any(t => t.TeamName == teamName))
+                {
+                    Console.WriteLine($"Team {teamName} was already created!");
+                    continue;
+                }
+                if (teams.Any(t => t.Creator == creator))
+                {
+                    Console.WriteLine($"{creator} cannot create another team!");
+                }
+
+                Teams team = new Teams(teamName, creator);
+                teams.Add(team);
+
+                Console.WriteLine($"Team {teamName} has been created by {creator}!");
+            }
+
+            List<string> userToJoin = new List<string>();
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "end of assignment")
+            {
+                userToJoin = command.Split("->", StringSplitOptions.RemoveEmptyEntries).ToList();
+                string user = userToJoin[0];
+                string teamToJoin = userToJoin[1];
+
+                Teams searchedTeam = teams.FirstOrDefault(t => t.TeamName == teamToJoin);
+
+                if (searchedTeam == null)
+                {
+                    Console.WriteLine($"Team {teamToJoin} does not exist!");
+                    continue;
+                }
+                if (teams.Any(t => t.Members.Contains(user)))
+                {
+                    Console.WriteLine($"Member {user} cannot join team {teamToJoin}!");
+                    continue;
+                }
+                if (teams.Any(t => t.Creator == user))
+                {
+                    Console.WriteLine($"Member {user} cannot join team {teamToJoin}!");
+                    continue;
+                }
+                searchedTeam.AddMembers(user);
+
+            }
+            List<Teams> teamsWithMembers = teams.FindAll(t => t.Members.Count > 0)
+                                                .OrderByDescending(t => t.Members.Count)
+                                                .ThenBy(t => t.TeamName)
+                                                .ToList();
+            List<Teams> teamsWithoutMembers = teams.FindAll(t => t.Members.Count == 0)
+                                                    .OrderBy(t => t.TeamName)
+                                                    .ToList();
+
+            foreach (Teams team in teamsWithMembers)
+            {
+                Console.WriteLine($"{team.TeamName}");
+                Console.WriteLine($"- {team.Creator}");
+                foreach (var member in team.Members.OrderBy(t => t))
+                {
+                    Console.WriteLine($"-- {member}");
+                }
+            }
+            Console.WriteLine("Teams to disband:");
+            foreach (Teams team in teamsWithoutMembers)
+            {
+                Console.WriteLine(team.TeamName);
+            }
+
+        }
+    }
+}
