@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Articles
+{
+    class Students
+    {
+        public Students(string firstName, string lastName, double grade)
+        {
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Grade = grade;
+        }
+        public override string ToString()
+        {
+            return $"{this.FirstName} {this.LastName}: {this.Grade:F2}";
+        }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public double Grade { get; set; }
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int number = int.Parse(Console.ReadLine());
+
+            List<Students> students = new List<Students>();
+
+            List<string> input = new List<string>();
+
+            for (int i = 1; i <= number; i++)
+            {
+                input = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                string firstName = input[0];
+                string lastName = input[1];
+                double grade = double.Parse(input[2]);
+
+                Students student = new Students(firstName, lastName, grade);
+                students.Add(student);
+            }
+            List<Students> sortedStudents = students.OrderByDescending(student => student.Grade).ToList();
+
+            foreach (Students student in sortedStudents)
+            {
+                Console.WriteLine(student);
+            }
+        }
+    }
+}
