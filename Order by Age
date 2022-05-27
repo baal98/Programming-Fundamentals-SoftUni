@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Vehicle_Catalogue___new
+{
+    class Person
+    {
+        public Person(string name, string id, int age)
+        {
+            this.Name = name;
+            this.Id = id;
+            this.Age = age;
+        }
+        public override string ToString()
+        {
+            return $"{this.Name} with ID: {this.Id} is {this.Age} years old.";
+        }
+
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public int Age { get; set; }
+
+
+    }
+       
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command;
+
+            List<Person> persons = new List<Person>();
+
+
+            while ((command = Console.ReadLine()) != "End")
+            {
+                List<string> input = command.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+                string name = input[0];
+                string id = input[1];
+                int age = int.Parse(input[2]);
+
+                Person person = new Person(name, id, age);
+
+                if (persons.Any(x => x.Id == id))
+                {
+                    persons.Remove(persons.Find(x => x.Id == id));
+                    persons.Add(person);
+                    continue;
+                }
+
+                persons.Add(person);
+
+            }
+            List<Person> orderedPeople = persons.OrderBy(x => x.Age).ToList();
+
+            foreach (Person person in orderedPeople)
+            {
+                Console.WriteLine(person);
+            }
+
+
+        }
+    }
+}
