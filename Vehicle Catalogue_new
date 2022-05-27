@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Vehicle_Catalogue___new
+{
+    class Vehicle
+    {
+        public Vehicle(string typeOfVehicle, string model, string colour, int horsePower)
+        {
+            this.TypeOfVehicle = typeOfVehicle;
+            this.Model = model;
+            this.Colour = colour;
+            this.HorsePower = horsePower;
+        }
+        public string TypeOfVehicle { get; set; }
+        public string Model { get; set; }
+        public string Colour { get; set; }
+        public int HorsePower { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command;
+            List<string> list = new List<string>();
+            List<Vehicle> vehicles = new List<Vehicle>();
+
+            while ((command = Console.ReadLine()) != "End")
+            {
+                list = command.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+                string typeOfVehicle = list[0];
+                string model = list[1];
+                string colour = list[2];
+                int horsePower = int.Parse(list[3]);
+
+                Vehicle vehicle = new Vehicle(typeOfVehicle, model, colour, horsePower);
+                vehicles.Add(vehicle);
+            }
+            
+            List<Vehicle> sortedVehicles = new List<Vehicle>();
+
+            while ((command = Console.ReadLine()) != "Close the Catalogue")
+            {
+                sortedVehicles.AddRange(vehicles.FindAll(v => v.Model == command));
+            }
+            PrintVehicles(sortedVehicles);
+
+            List<Vehicle> cars = vehicles.FindAll(vehicle => vehicle.TypeOfVehicle == "car");
+            List<Vehicle> trucks = vehicles.FindAll(vehicle => vehicle.TypeOfVehicle == "truck");
+            if (cars.Count != 0)
+            {
+                AverageHorsePower(cars);
+            }
+            else
+            {
+                Console.WriteLine("Cars have average horsepower of: 0.00.");
+            }
+          
+            if (trucks.Count != 0)
+            {
+                AverageHorsePower(trucks);
+            }
+            else
+            {
+                Console.WriteLine("Trucks have average horsepower of: 0.00.");
+            }
+
+        }
+        private static void AverageHorsePower(List<Vehicle> vehicles)
+        {
+            double sumHorsePower = 0;
+            int counter = 0;
+            double averageHorsePower = 0;
+            string typeOfVehicle1;
+            foreach (Vehicle vehicle in vehicles)
+                {
+                    counter++;
+                    sumHorsePower += vehicle.HorsePower;
+                }
+                typeOfVehicle1 = vehicles[0].TypeOfVehicle;
+                averageHorsePower = sumHorsePower / counter;
+                Console.WriteLine($"{char.ToUpper(typeOfVehicle1[0]) + typeOfVehicle1.Substring(1)}s have average horsepower of: {averageHorsePower:F2}.");
+        }
+        private static void PrintVehicles(List<Vehicle> vehicles)
+        {
+            foreach (var vehicle in vehicles)
+            {
+                Console.WriteLine($"Type: {char.ToUpper(vehicle.TypeOfVehicle[0]) + vehicle.TypeOfVehicle.Substring(1)}");
+                Console.WriteLine($"Model: {char.ToUpper(vehicle.Model[0]) + vehicle.Model.Substring(1)}");
+                Console.WriteLine($"Color: {vehicle.Colour}");
+                Console.WriteLine($"Horsepower: {vehicle.HorsePower}");
+            }
+        }
+    }
+}
