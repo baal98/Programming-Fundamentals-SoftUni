@@ -1,0 +1,39 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Word_synonyms
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>();
+
+            int counts = int.Parse(Console.ReadLine());
+
+
+            for (int i = 1; i <= counts; i++)
+            {
+                string word = Console.ReadLine();
+                string synonyms = Console.ReadLine();
+
+                if (dictionary.ContainsKey(word))
+                {
+                    dictionary[word].Add(synonyms);
+                }
+                else
+                {
+                    List<string> newSynonymsList = new List<string>();
+                    newSynonymsList.Add(synonyms);
+                    dictionary.Add(word, newSynonymsList);
+                }
+            }
+            foreach (var word in dictionary)
+            {
+                Console.WriteLine($"{word.Key} - {string.Join(", ", word.Value)}");
+            }
+
+        }
+    }
+}
