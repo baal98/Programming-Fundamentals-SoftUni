@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Odd_Occurrences
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> list = Console.ReadLine().ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            Dictionary<string, int> input = new Dictionary<string, int>();
+
+            foreach (string item in list)
+            {
+                if (input.ContainsKey(item))
+                {
+                    input[item] += 1;
+                }
+                else
+                {
+                    input.Add(item, 1);
+                }
+            }
+            List<string> sortedDictionary = new List<string>();
+            sortedDictionary = input.Where(x => x.Value % 2 != 0).Select(x => x.Key).ToList();
+
+            Console.WriteLine(string.Join(" ", sortedDictionary));
+
+        }
+    }
+}
