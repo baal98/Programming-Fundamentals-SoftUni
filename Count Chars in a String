@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Count_Chars_in_a_String
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string text = Console.ReadLine();
+            List<char> chars = text.ToList();
+            List<char> clearedChars = chars.Where(c => c != ' ').ToList();
+
+            Dictionary<char, int> dic = new Dictionary<char, int>();
+
+            foreach (char c in clearedChars)
+            {
+                if (dic.ContainsKey(c))
+                {
+                    dic[c] += 1;
+                }
+                else
+                {
+                    dic.Add(c, 1);
+                }
+            }
+
+            foreach (var d in dic)
+            {
+                Console.WriteLine($"{d.Key} -> {d.Value}");
+            }
+        }
+    }
+}
