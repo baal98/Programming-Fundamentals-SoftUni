@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace A_Miner_Task
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command;
+
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+            while (true)
+            {
+                command = Console.ReadLine();
+                if (command == "stop")
+                {
+                    break;
+                }
+                
+                string item = command;
+                int quantity = int.Parse(Console.ReadLine());
+
+
+                if (dic.ContainsKey(item))
+                {
+                    dic[item] += quantity;
+                }
+                else
+                {
+                    dic.Add(item, quantity);
+                }
+            }
+            foreach (var item in dic)
+            {
+                Console.WriteLine($"{item.Key} -> {item.Value}");
+            }
+
+        }
+    }
+}
