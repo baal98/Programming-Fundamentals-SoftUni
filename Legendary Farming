@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Legendary_Farming
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, long> item = new Dictionary<string, long>();
+            string command;
+
+            while ((command = Console.ReadLine()) != String.Empty)
+            {
+                List<string> list = command.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                while (list.Count != 0)
+                {
+                    List<string> input = list.ToList();
+                    long quantity = long.Parse(input[0]);
+                    string material = input[1].ToLower();
+                    list.RemoveRange(0, 2);
+
+                    if (item.ContainsKey(material))
+                    {
+                        item[material] += quantity;
+                    }
+                    else
+                    {
+                        item.Add(material, quantity);
+                    }
+                    if (IfLegendaryExist(item))
+                    {
+                        break;
+                    }
+                }
+                if (IfLegendaryExist(item))
+                {
+                    break;
+                }
+            }
+            ItemName(item);
+            SortedDictionary<string, long> sortedItems = new SortedDictionary<string, long>();
+            Dictionary<string, long> junkItems = new Dictionary<string, long>();
+
+            foreach (var i in item)
+            {
+                if (i.Key.Contains("shards") || i.Key.Contains("fragments") || i.Key.Contains("motes"))
+                {
+                   sortedItems.Add(i.Key, i.Value);
+                }
+                else
+                {
+                   junkItems.Add(i.Key, i.Value);
+                }
+            }
+            foreach (var i in item)
+            {
+                if (!item.Keys.Contains("shards"))
+                {
+                    sortedItems["shards"] = 0;
+                }
+                if (!item.Keys.Contains("fragments"))
+                {
+                    sortedItems["fragments"] = 0;
+                }
+                if (!item.Keys.Contains("motes"))
+                {
+                    sortedItems["motes"] = 0;
+                }
+            }
+            foreach (var i in sortedItems.Reverse())
+            {
+                Console.WriteLine($"{i.Key}: {i.Value}");
+            }
+            foreach (var i in junkItems)
+            {
+                Console.WriteLine($"{i.Key}: {i.Value}");
+            }
+        }
+
+        private static bool IfLegendaryExist(Dictionary<string, long> item)
+        {
+            if (item.ContainsKey("shards") && item["shards"] >= 250)
+            {
+                return true;
+            }
+            else if (item.ContainsKey("fragments") && item["fragments"] >= 250)
+            {
+                return true;
+            }
+            else if (item.ContainsKey("motes") && item["motes"] >= 250)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        private static void ItemName(Dictionary<string, long> item)
+        {
+            long temp = 0;
+
+            if (item.ContainsKey("shards") && item["shards"] >= 250)
+            {
+                temp = item["shards"] - 250;
+                item["shards"] = temp;
+                Console.WriteLine("Shadowmourne obtained!");
+            }
+            else if (item.ContainsKey("fragments") && item["fragments"] >= 250)
+            {
+                temp = item["fragments"] - 250;
+                item["fragments"] = temp;
+                Console.WriteLine("Valanyr obtained!");
+            }
+            else if (item.ContainsKey("motes") && item["motes"] >= 250)
+            {
+                temp = item["motes"] - 250;
+                item["motes"] = temp;
+                Console.WriteLine("Dragonwrath obtained!");
+            }
+        }
+    }
+}
