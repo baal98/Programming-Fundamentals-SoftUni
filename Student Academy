@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Student_Academy
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, List<double>> students = new Dictionary<string, List<double>>();
+
+            int numberOfStudents = int.Parse(Console.ReadLine());
+
+            for (int i = 1; i <= numberOfStudents; i++)
+            {
+                string name = Console.ReadLine();
+                double grade = double.Parse(Console.ReadLine());
+                List<double> listGrades = new List<double>();
+
+                if (students.ContainsKey(name))
+                {
+                    students[name].Add(grade);
+
+                }
+                else
+                {
+                    listGrades.Add(grade);
+                    students.Add(name, listGrades);
+                }
+
+            }
+
+            foreach (var student in students)
+            {
+                double sum = 0;
+                foreach (var grade in student.Value)
+                { 
+                    sum += grade;
+                }
+                double averigeSum = sum / student.Value.Count;
+
+                if (averigeSum >= 4.5)
+                {
+                    Console.WriteLine($"{student.Key} -> {averigeSum:F2}");
+                }
+
+            }
+        }
+    }
+}
