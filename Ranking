@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Ranking
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, string> inputs = new Dictionary<string, string>();
+
+            string command;
+            
+            while ((command = Console.ReadLine()) != "end of contests")
+            {
+                List<string> listContest = command.Split(":", StringSplitOptions.RemoveEmptyEntries).ToList();
+                string contest = listContest[0];
+                string passwordForContest = listContest[1];
+
+                if (!inputs.ContainsKey(contest))
+                {
+                    inputs[contest] = "";
+                }
+                inputs[contest] += passwordForContest;
+            }
+
+            List<string> listContest1 = new List<string>();
+            SortedDictionary<string, Dictionary<string, int>> users = new SortedDictionary<string, Dictionary<string, int>>();
+
+            while ((command = Console.ReadLine()) != "end of submissions")
+            {
+                listContest1 = command.Split("=>", StringSplitOptions.RemoveEmptyEntries).ToList();
+                string contest = listContest1[0];
+                string password = listContest1[1];
+                string username = listContest1[2];
+                int points = int.Parse(listContest1[3]);
+
+                Dictionary<string, int> coursesWithGrades = new Dictionary<string, int>();
+
+                if (!coursesWithGrades.ContainsKey(contest))
+                {
+                    coursesWithGrades[contest] = 0;
+                }
+                coursesWithGrades[contest] += points;
+
+                if (!inputs.ContainsKey(contest))
+                {
+                    continue;
+                }
+                if (!inputs[contest].Contains(password))
+                {
+                    continue;
+                }
+                if (users.ContainsKey(username))
+                {
+                    if (!users[username].ContainsKey(contest))
+                    {
+                        users[username].Add(contest, points);
+                    }
+                    else
+                    {
+                        if (users[username][contest] < points)
+                        {
+                            users[username][contest] = points;
+                        }
+                    }
+                }
+                else
+                {
+                    users.Add(username, coursesWithGrades);
+                }
+
+
+            }
+
+            string maxUser = "";
+
+            int maxSum = int.MinValue;
+
+            foreach (var user in users)
+            {
+                int currentSum = 0;
+                currentSum += user.Value.Sum(x => x.Value);
+                string currentUser = user.Key;
+
+                if (maxSum < currentSum)
+                {
+                    maxSum = currentSum;
+                    maxUser = currentUser;
+                }
+
+            }
+            Console.WriteLine($"Best candidate is {maxUser} with total {maxSum} points.");
+            Console.WriteLine("Ranking: ");
+
+            foreach (var user in users)
+            {
+                Console.WriteLine($"{user.Key}");
+                foreach (var course in user.Value.OrderByDescending(x => x.Value))
+                {
+                    Console.WriteLine($"#  {course.Key} -> {course.Value}");
+                }
+            }
+        }
+    }
+}
