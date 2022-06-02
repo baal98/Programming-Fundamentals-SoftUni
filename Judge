@@ -1,0 +1,102 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Judge
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var contestsDic = new Dictionary<string, Dictionary<string, int>>();
+            var usersDic = new SortedDictionary<string, Dictionary<string, int>>();
+
+            string command = string.Empty;
+
+            while ((command = Console.ReadLine()) != "no more time")
+            {
+                List<string> lines = command.Split(" -> ", StringSplitOptions.RemoveEmptyEntries).ToList();
+                string name = lines[0];
+                string contest = lines[1];
+                int point = int.Parse(lines[2]);
+
+                if (contestsDic.ContainsKey(contest))
+                {
+                    if (contestsDic[contest].ContainsKey(name))
+                    {
+                        if (contestsDic[contest][name] < point)
+                        {
+                            contestsDic[contest][name] = point;
+                        }
+                    }
+                    else
+                    {
+                        contestsDic[contest].Add(name, point);
+                    }
+                }
+                else
+                {
+                    contestsDic.Add(contest, new Dictionary<string, int>());
+                    contestsDic[contest].Add(name, point);
+                }
+
+                if (usersDic.ContainsKey(name))
+                {
+                    if (usersDic[name].ContainsKey(contest))
+                    {
+                        if (usersDic[name][contest] < point)
+                        {
+                            usersDic[name][contest] = point;
+                        }
+                    }
+                    else
+                    {
+                        usersDic[name].Add(contest, point);
+                    }
+                }
+                else
+                {
+                    usersDic.Add(name, new Dictionary<string, int>());
+                    usersDic[name].Add(contest, point);
+                }
+
+            }
+
+            int position = 1;
+
+            foreach (var contest in contestsDic) //contest in order of input!!!
+            {
+                position = 1;
+                Console.WriteLine($"{contest.Key}: {contest.Value.Count} participants");
+
+                foreach (var name in contest.Value.OrderByDescending(x => x.Value).ThenBy(x => x.Key)) //thеn ordered by name in ascending order
+                {
+                    Console.WriteLine($"{position}. {name.Key} <::> {name.Value}");
+                    position++;
+                }
+            }
+
+            var filterIndivDic = new Dictionary<string, int>();
+            int sum = 0;
+            foreach (var name in usersDic)
+            {
+                foreach (var contest in name.Value)
+                {
+                    sum += contest.Value;
+                }
+                filterIndivDic.Add(name.Key, sum);
+                sum = 0;
+            }
+
+            filterIndivDic = filterIndivDic.OrderByDescending(x => x.Value).ThenBy(x => x.Key).ToDictionary(a => a.Key, b => b.Value);
+
+            position = 1;
+            Console.WriteLine("Individual standings:");
+            foreach (var name in filterIndivDic)
+            {
+                Console.WriteLine($"{position}. {name.Key} -> {name.Value}");
+                position++;
+            }
+        }
+    }
+}
