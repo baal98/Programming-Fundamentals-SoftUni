@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Repeat_Strings
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command = Console.ReadLine();
+            List<string> list = command.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            int length = list.Count;
+            string text = "";
+            string finalText = "";
+            
+
+            for (int i = 0; i < length; i++)
+            {
+                string input = list[0];
+                for (int j = 0; j < input.Length; j++)
+                {
+                    text += input;
+                }
+                finalText += text;
+                text = "";
+                list.RemoveAt(0);
+            }
+
+            Console.WriteLine(finalText);
+        }
+    }
+}
