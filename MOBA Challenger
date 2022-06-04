@@ -1,0 +1,124 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MOBA_Challenger
+
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Dictionary<string, Dictionary<string, int>> playersDictionary = new Dictionary<string, Dictionary<string, int>>();
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "Season end")
+            {
+                List<string> input = new List<string>();
+                if (command.Contains(" -> "))
+                {
+                    input = command.Split(" -> ", StringSplitOptions.RemoveEmptyEntries).ToList();
+                    string player = input[0];
+                    string position = input[1];
+                    int skill = int.Parse(input[2]);
+
+                    if (playersDictionary.ContainsKey(player))
+                    {
+                        if (playersDictionary[player].ContainsKey(position) && playersDictionary[player][position] < skill)
+                        {
+                            playersDictionary[player][position] = skill;
+                            continue;
+                        }
+                        else if (playersDictionary[player].ContainsKey(position) && playersDictionary[player][position] >= skill)
+                        {
+                            continue;
+                        }
+                        playersDictionary[player].Add(position, skill);
+                    }
+                    else
+                    {
+                        playersDictionary[player] = new Dictionary<string,int>();
+                        playersDictionary[player].Add(position, skill);
+                    }
+
+
+                }
+                else
+                {
+                    input = command.Split(" vs ", StringSplitOptions.RemoveEmptyEntries).ToList();
+                    string player1 = input[0];
+                    string player2 = input[1];
+
+                    if (playersDictionary.ContainsKey(player1) && playersDictionary.ContainsKey(player2))
+                    {
+                        if (IsPositionExist(playersDictionary, player1, player2))
+                        {
+                            int sumSkillPlayer1 = SumPlayerSkils(playersDictionary, player1);
+                            int sumSkillPlayer2 = SumPlayerSkils(playersDictionary, player2);
+
+                            if (sumSkillPlayer1 > sumSkillPlayer2)
+                            {
+                                playersDictionary.Remove(player2);
+                            }
+                            else if (sumSkillPlayer2 > sumSkillPlayer1)
+                            {
+                                playersDictionary.Remove(player1);
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+            Dictionary<string, int> orderedPlayerDictionary = new Dictionary<string, int>();
+
+            foreach (var name in playersDictionary)
+            {
+                int sumSkillPlayer = SumPlayerSkils(playersDictionary, name.Key);
+                orderedPlayerDictionary[name.Key] = sumSkillPlayer;
+            }
+            
+            foreach (var playa in playersDictionary.OrderByDescending(x => x.Value.Values.Sum()).ThenBy(x => x.Key))
+            {
+                Console.WriteLine($"{playa.Key}: {playa.Value.Values.Sum()} skill");
+                foreach (var pair in playa.Value.OrderByDescending(x => x.Value).ThenBy(x => x.Key))
+                {
+                    Console.WriteLine($"- {pair.Key} <::> {pair.Value}");
+                }
+            }
+        }
+
+        private static int SumPlayerSkils(Dictionary<string, Dictionary<string, int>> playersDictionary, string player1)
+        {
+            int sumSkillPlayer1 = 0;
+            foreach (var skill in playersDictionary[player1].Values)
+            {
+                sumSkillPlayer1 += skill;
+            }
+
+            return sumSkillPlayer1;
+        }
+
+        private static bool IsPositionExist(Dictionary<string, Dictionary<string, int>> playersDictionary, string player1, string player2)
+        {
+            foreach (var position1 in playersDictionary[player1].Keys)
+            {
+                foreach (var position2 in playersDictionary[player2].Keys)
+                {
+                    if (position1 == position2)
+                    {
+                        return  true;
+                    }
+                }
+            }
+            return false;
+        }        
+    }
+}
