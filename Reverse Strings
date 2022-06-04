@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Reverse_Strings
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string text;
+            
+            while ((text = Console.ReadLine()) != "end")
+            {
+                char[] stringReversed = text.ToCharArray();
+                Array.Reverse(stringReversed);
+                Console.WriteLine($"{text} = {new string (stringReversed)}");
+            }
+        }
+    }
+}
