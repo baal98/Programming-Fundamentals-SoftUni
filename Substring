@@ -1,0 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Substring
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string word = Console.ReadLine();
+            string input = Console.ReadLine();
+
+            while (input.Contains(word))
+            {
+                int indexOfWord = input.IndexOf(word);
+                input = input.Remove(indexOfWord, word.Length);
+            }
+            Console.WriteLine(input);
+        }
+    }
+}
