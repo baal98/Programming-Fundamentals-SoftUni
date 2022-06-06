@@ -1,0 +1,38 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Digits_Letters_and_Other
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string inputs = Console.ReadLine();
+            char[] output = inputs.ToCharArray();
+            StringBuilder digits = new StringBuilder();
+            StringBuilder letters = new StringBuilder();
+            StringBuilder othersChars = new StringBuilder();
+
+            for (int i = 0; i < output.Length; i++)
+            {
+                if (Char.IsDigit(output[i]))
+                {
+                    digits.Append(output[i]);
+                }
+                if (Char.IsLetter(output[i]))
+                {
+                    letters.Append(output[i]);
+                }
+                if(!Char.IsDigit(output[i]) && !Char.IsLetter(output[i]))
+                {
+                    othersChars.Append(output[i]);
+                }
+            }
+            Console.WriteLine(digits);
+            Console.WriteLine(letters);
+            Console.WriteLine(othersChars);
+        }
+    }
+}
