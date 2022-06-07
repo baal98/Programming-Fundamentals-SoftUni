@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Character_Multiplier
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] inputs = Console.ReadLine().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            long multipliedChar = 0;
+            long sum = 0;
+            long finalSum = 0;
+            int length = 0;
+
+            if (inputs[0].Length < inputs[1].Length)
+            {
+                length = inputs[0].Length;
+            }
+            else
+            {
+                length = inputs[1].Length;
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+                char[] input1 = inputs[0].ToArray();
+                char[] input2 = inputs[1].ToArray();
+
+                int char1 = input1[i];
+                int char2 = input2[i];
+
+                multipliedChar += char1 * char2;
+            }
+
+            if (inputs[0].Length < inputs[1].Length)
+            {
+                for (int i = inputs[1].Length - (inputs[1].Length - inputs[0].Length); i < inputs[1].Length; i++)
+                {
+                    char[] input = inputs[1].ToArray();
+
+                    int char1 = input[i];
+                    sum += char1;
+                }
+                finalSum = sum + multipliedChar;
+            }
+            else if (inputs[0].Length > inputs[1].Length)
+            {
+                for (int i = inputs[0].Length - (inputs[0].Length - inputs[1].Length); i < inputs[0].Length; i++)
+                {
+                    char[] input = inputs[0].ToArray();
+
+                    int char1 = input[i];
+                    sum += char1;
+                }
+                finalSum = sum + multipliedChar;
+            }
+            else
+            {
+                finalSum = multipliedChar;
+            }
+
+            Console.WriteLine(finalSum);
+        }
+    }
+}
