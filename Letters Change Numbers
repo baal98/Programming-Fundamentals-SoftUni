@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Letters_Change_Numbers
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command = Console.ReadLine();
+            List<string> words = command.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+            decimal sum = 0;
+
+            foreach (string word in words)
+            {
+                sum += WordSum(word);
+            }
+            Console.WriteLine($"{sum:F2}");
+        }
+        static decimal WordSum(string word)
+        {
+            decimal sum = 0;
+            char firstChar = word[0];
+            char lastChar = word[word.Length - 1];
+
+            int number = int.Parse(word.Substring(1, word.Length - 2));
+
+            int firstCharPosition = CharPosition(firstChar);
+            int lastCharPosition = CharPosition(lastChar);
+
+            if (Char.IsUpper(firstChar))
+            {
+                sum = (decimal)number / firstCharPosition;
+            }
+            else
+            {
+                sum = (decimal)number * firstCharPosition;
+            }
+            if (Char.IsUpper(lastChar))
+            {
+                sum -= lastCharPosition;
+            }
+            else
+            {
+                sum += lastCharPosition;
+            }
+            return sum;
+        }
+        static int CharPosition(char character)
+        {
+            char letter = Char.ToLower(character);
+            return (int)letter - 96;
+        }
+    }
+}
