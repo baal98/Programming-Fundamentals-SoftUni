@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Ascii_Sumator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            char firstChar = Convert.ToChar(Console.ReadLine());
+            char secondChar = Convert.ToChar(Console.ReadLine());
+
+            string command = Console.ReadLine();
+            char[] inputs = command.ToCharArray();
+            int sum = 0;
+
+            foreach (char input in inputs)
+            {
+                sum += IfExist(firstChar, secondChar, input);
+            }
+            Console.WriteLine(sum);
+        }
+        static int IfExist( char firstChar, char secondChar, char searchedChar)
+        {
+            int firstCharNumber = Convert.ToInt32(firstChar);
+            int secondCharNumber = Convert.ToInt32(secondChar);
+            int searchedCharNumber = Convert.ToInt32(searchedChar);
+            int sum = 0;
+
+            if (firstCharNumber < searchedChar && searchedChar < secondChar)
+            {
+                return sum = searchedCharNumber;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+}
