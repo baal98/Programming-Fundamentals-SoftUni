@@ -1,0 +1,35 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace HTML
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("<h1>");
+            string title = Console.ReadLine();
+            Console.WriteLine($"\t {title}");
+            Console.WriteLine("</h1>");
+
+            string content = Console.ReadLine();
+            Console.WriteLine("<article>");
+            Console.WriteLine($"\t {content}");
+            Console.WriteLine("</article>");
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "end of comments")
+            {
+                Console.WriteLine("<div>");
+
+               
+                Console.WriteLine($"\t {command}");
+
+                Console.WriteLine("</div>");
+            }
+        }
+    }
+}
