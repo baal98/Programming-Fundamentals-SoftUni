@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Treasure_Finder
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] digits = Console.ReadLine()
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(int.Parse).ToArray();
+
+            string command;
+
+            while ((command = Console.ReadLine()) != "find")
+            {
+                char[] inputChars = command.ToCharArray();
+
+                string decodedMessage = DecodedString(digits, inputChars);
+
+                int indexOfTreasure = decodedMessage.IndexOf("<");
+
+                string treasureName = decodedMessage.Substring(0, indexOfTreasure);
+                string coordinateName = decodedMessage.Substring(indexOfTreasure +1, decodedMessage.Length - indexOfTreasure - 2);
+
+                string treasure = treasureName.Substring(treasureName.IndexOf('&'), treasureName.LastIndexOf('&') - treasureName.IndexOf('&')).Replace('&', ' ');
+                Console.WriteLine($"Found{treasure} at {coordinateName}");
+            }
+
+        }
+        static string DecodedString(int[] digits, char[] inputChars)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < inputChars.Length;)
+            {
+
+                for (int j = 0; j < digits.Length; j++)
+                {
+                    if (i == inputChars.Length)
+                    {
+                        break;
+                    }
+                    sb.Append(Convert.ToChar(inputChars[i] - digits[j]));
+                    i++;
+                }
+            }
+            return sb.ToString();
+        }
+    }
+}
