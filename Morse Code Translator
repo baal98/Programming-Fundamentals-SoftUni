@@ -1,0 +1,155 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Morse_Code_Translator
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command = Console.ReadLine();
+
+            string[] words = command.Split(" | ", StringSplitOptions.RemoveEmptyEntries);
+
+            List<string> list = new List<string>();
+
+            foreach (string word in words)
+            {
+                list.Add(Convert.ToString(ConvertMorseToString(word)));
+
+
+            }
+            Console.WriteLine(string.Join(" ", list));
+
+        }
+        static StringBuilder ConvertMorseToString(string word)
+        {
+            string[] letters = word.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string letter in letters)
+            {
+                if (letter.Length == 1)
+                {
+                    if (letter == ".")
+                    {
+                        sb.Append('E');
+                    }
+                    else if (letter == "-")
+                    {
+                        sb.Append('T');
+                    }
+                }
+                else if (letter.Length == 2)
+                {
+                    if (letter == ".-")
+                    {
+                        sb.Append('A');
+                    }
+                    else if (letter == "..")
+                    {
+                        sb.Append('I');
+                    }
+                    else if (letter == "--")
+                    {
+                        sb.Append('M');
+                    }
+                    else if (letter == "-.")
+                    {
+                        sb.Append('N');
+                    }
+                }
+                else if (letter.Length == 3)
+                {
+                    if (letter == "-..")
+                    {
+                        sb.Append('D');
+                    }
+                    else if (letter == "--.")
+                    {
+                        sb.Append('G');
+                    }
+                    else if (letter == "-.-")
+                    {
+                        sb.Append('K');
+                    }
+                    else if (letter == "---")
+                    {
+                        sb.Append('O');
+                    }
+                    else if (letter == ".-.")
+                    {
+                        sb.Append('R');
+                    }
+                    else if (letter == "...")
+                    {
+                        sb.Append('S');
+                    }
+                    else if (letter == "..-")
+                    {
+                        sb.Append('U');
+                    }
+                    else if (letter == ".--")
+                    {
+                        sb.Append('W');
+                    }
+                }
+                else if (letter.Length == 4)
+                {
+                    if (letter == "-...")
+                    {
+                        sb.Append('B');
+                    }
+                    else if (letter == "-.-.")
+                    {
+                        sb.Append('C');
+                    }
+                    else if (letter == "..-.")
+                    {
+                        sb.Append('F');
+                    }
+                    else if (letter == "....")
+                    {
+                        sb.Append('H');
+                    }
+                    else if (letter == ".---")
+                    {
+                        sb.Append('J');
+                    }
+                    else if (letter == ".-..")
+                    {
+                        sb.Append('L');
+                    }
+                    else if (letter == ".--.")
+                    {
+                        sb.Append('P');
+                    }
+                    else if (letter == "--.-")
+                    {
+                        sb.Append('Q');
+                    }
+                    else if (letter == "...-")
+                    {
+                        sb.Append('V');
+                    }
+                    else if (letter == "-..-")
+                    {
+                        sb.Append('X');
+                    }
+                    else if (letter == "-.--")
+                    {
+                        sb.Append('Y');
+                    }
+                    else if (letter == "--..")
+                    {
+                        sb.Append('Z');
+                    }
+                }
+            }
+            return sb;
+        }
+    }
+}
