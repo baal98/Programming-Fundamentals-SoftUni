@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Match_Dates
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string dates = Console.ReadLine();
+
+            Regex regex = new Regex(@"\b(?<day>\d{2})(?<separator>[-./])(?<month>[A-Z][a-z]{2})\<separator>(?<year>\d{4})\b");
+
+            MatchCollection matches = regex.Matches(dates);
+
+            foreach (Match match in matches)
+            {
+                string date = match.Groups["day"].Value;
+                string month = match.Groups["month"].Value;
+                string year = match.Groups["year"].Value;
+                string separator = match.Groups["separator"].Value;
+
+                Console.WriteLine($"Day: {date}, Month: {month}, Year: {year}");
+            }
+        }
+    }
+}
