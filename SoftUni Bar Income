@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace SoftUni_Bar_Income
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Regex regex = new Regex(@"%(?'name'[A-Z][a-z]+)%<(?'product'\w+)>\|(?'count'\d+).*\|(.*?)(?'price'[0-9.]+)\$");
+            Regex regexName = new Regex(@"%(?'name'[A-Z][a-z]+)%");
+            Regex regexProduct = new Regex(@"<(?'product'\w+)>");
+            Regex regexCount = new Regex(@"\|(?'count'\d+).*\|");
+            Regex regexPrice = new Regex(@"(?'price'[0-9.]+)\$");
+
+            string command;
+            double totalSum = 0;
+
+            while ((command = Console.ReadLine()) != "end of shift")
+            {
+                Match matchName = regexName.Match(command);
+                Match matchProduct = regexProduct.Match(command);
+                Match matchCount = regexCount.Match(command);
+                Match matchPrice = regexPrice.Match(command);
+
+
+
+                double sum = 0;
+                if (matchName.Success && matchProduct.Success && matchCount.Success && matchPrice.Success)
+                {
+                    string name = matchName.Groups["name"].Value;
+                    string product = matchProduct.Groups["product"].Value;
+                    int count = int.Parse(matchCount.Groups["count"].Value);
+                    double price = double.Parse(matchPrice.Groups["price"].Value);
+                    sum = count * price;
+
+                    Console.WriteLine($"{name}: {product} - {sum:F2}");
+
+                    totalSum += sum;
+                }
+            }
+            Console.WriteLine($"Total income: {totalSum:F2}");
+        }
+    }
+}
