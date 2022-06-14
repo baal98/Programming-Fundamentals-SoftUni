@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Race
+{
+
+    public class Participant
+    {
+        public Participant(string name, int distance)
+        {
+            this.Name = name;
+            this.Distance = distance;
+        }
+        public string Name { get; set; }
+        public int Distance { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> list = Console.ReadLine().Split(", ", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            Regex regexName = new Regex(@"[A-Za-z]+");
+            Regex regexDistance = new Regex(@"[0-9]*");
+
+            string command;
+            SortedDictionary <string, int> participants = new SortedDictionary<string, int>();
+
+            while ((command = Console.ReadLine()) != "end of race")
+            {
+                MatchCollection participantName = regexName.Matches(command);
+                string name = "";
+
+                foreach (Match match in participantName)
+                {
+                    name += match;
+                }
+
+                MatchCollection participantDistance = regexDistance.Matches(command);
+
+                string textDistance = "";
+
+                foreach (Match match in participantDistance)
+                {
+                    textDistance += match;
+                }
+
+                int distance = 0;
+
+                for (int i = 0; i < textDistance.Length; i++)
+                {
+                    distance += int.Parse(Convert.ToString(textDistance[i]));
+                }
+
+                Participant participant = new Participant(name, distance);
+                if (participants.ContainsKey(participant.Name))
+                {
+                    participants[participant.Name] += participant.Distance;
+                }
+                if (list.Contains(participant.Name) && !participants.ContainsKey(participant.Name))
+                {
+                    participants[participant.Name] = participant.Distance;
+                }
+                
+
+            }
+
+            int counter = 1;
+
+            foreach (var item in participants.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value))
+            {
+                if (counter > 3)
+                {
+                    break;
+                }
+                Console.WriteLine($"{counter}{GetOrdinalSuffix(counter)} place: {item.Key}");
+                counter++;
+            }
+        }
+        private static string GetOrdinalSuffix(int num)
+        {
+            string number = num.ToString();
+            if (number.EndsWith("11")) return "th";
+            if (number.EndsWith("12")) return "th";
+            if (number.EndsWith("13")) return "th";
+            if (number.EndsWith("1")) return "st";
+            if (number.EndsWith("2")) return "nd";
+            if (number.EndsWith("3")) return "rd";
+            return "th";
+        }
+    }
+}
