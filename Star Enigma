@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Star_Enigma
+{
+    public class Planet
+    {
+        public Planet(string name, int population)
+        {
+            this.Name = name;
+            this.Population = population;
+        }
+        public string Name { get; set; }
+        public int Population { get; set; }
+
+    }
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command;
+
+            Regex regex = new Regex(@"[STARstar]+");
+
+            int number = int.Parse(Console.ReadLine());
+            Dictionary<string, int> atackedPlanets = new Dictionary<string, int>();
+            Dictionary<string, int> destroyedPlanets = new Dictionary<string, int>();
+
+            for (int i = 0; i < number; i++)
+            {
+                string planetName = "";
+                int planetPopulation = 0;
+                string attackType = "";
+                int soldierCount = 0;
+
+                string matchStringStar = "";
+                command = Console.ReadLine();
+                MatchCollection matches = regex.Matches(command);
+
+                foreach (Match match in matches)
+                {
+                    matchStringStar += match.Groups[0].Value;
+                }
+
+                int counter = matchStringStar.Length;
+
+                char[] collection = command.ToCharArray();
+                string newInputChars = "";
+                foreach (char c in collection)
+                {
+                    int index = c - counter;
+
+                    newInputChars += Convert.ToChar(index);
+                }
+               
+                Regex regexPlanet = new Regex(@"@([A-Za-z]+)");
+                Match planetNameRegex = regexPlanet.Match(newInputChars.ToString());
+                if (!planetNameRegex.Success)
+                {
+                    continue;
+                }
+                planetName = planetNameRegex.Groups[1].Value;
+
+                Regex regexPopulation = new Regex(@":(\d+)");
+                Match planetPopupaltionRegex = regexPopulation.Match(newInputChars.ToString());
+                if (!planetPopupaltionRegex.Success)
+                {
+                    continue;
+                }
+                planetPopulation = int.Parse(planetPopupaltionRegex.Groups[1].Value);
+
+                Regex regexAction = new Regex(@"!([AD])!");
+                Match actionRegex = regexAction.Match(newInputChars.ToString());
+                if (!actionRegex.Success)
+                {
+                    continue;
+                }
+                attackType = actionRegex.Groups[1].Value;
+
+                Regex regexSoldierCount = new Regex(@"->(\d+)");
+                Match soldierCountRegex = regexSoldierCount.Match(newInputChars.ToString());
+                if (!soldierCountRegex.Success)
+                {
+                    continue;
+                }
+                soldierCount = int.Parse(soldierCountRegex.Groups[1].Value);
+
+                if (attackType == "A")
+                {
+                    if (!atackedPlanets.ContainsKey(planetName))
+                    {
+                        atackedPlanets[planetName] = planetPopulation;
+                    }
+                }
+                else if (attackType == "D")
+                {
+                    if (!destroyedPlanets.ContainsKey(planetName))
+                    {
+                        destroyedPlanets[planetName] = planetPopulation;
+                    }
+                }
+            }
+            Console.WriteLine($"Attacked planets: {atackedPlanets.Keys.Count}");
+            if (atackedPlanets.Keys.Count > 0)
+            {
+                foreach (var planet in atackedPlanets.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value))
+                {
+                    Console.WriteLine($"-> {planet.Key}");
+                }
+            }
+            Console.WriteLine($"Destroyed planets: {destroyedPlanets.Keys.Count}");
+            if (destroyedPlanets.Keys.Count > 0)
+            {
+                foreach (var planet in destroyedPlanets.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value))
+                {
+                    Console.WriteLine($"-> {planet.Key}");
+                }
+            }
+        }
+    }
+}
