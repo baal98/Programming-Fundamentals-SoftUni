@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Extract_Emails
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string command = Console.ReadLine();
+
+            Regex regex = new Regex(@"(^|(?<=\s))(?'username'[A-Za-z0-9]+[\.\-_]?[A-Za-z0-9]+)\@(?'host'[A-Za-z]+(\-[A-Za-z]+)?(\.[A-Za-z]+)+)(\b|(?=\s))");
+
+            MatchCollection matches = regex.Matches(command);
+
+            foreach (Match match in matches)
+            {
+                Console.WriteLine(match);
+            }
+        }
+    }
+}
