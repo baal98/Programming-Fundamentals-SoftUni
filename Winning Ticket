@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace Winning_Ticket
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            char[] charsToTrim = { ',', ' ', '\t' };
+            string[] inputs = Console.ReadLine().Split(charsToTrim, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string input in inputs)
+            {
+                if (input.Length < 20 || input.Length > 20)
+                {
+                    Console.WriteLine("invalid ticket");
+                    continue;
+                }
+
+                string firstHalf = input.Substring(0, 10);
+                string secondHalf = input.Substring(10, 10);
+
+                Regex halfRegex = new Regex(@"\@{6,9}|\#{6,9}|\${6,9}|\^{6,9}");
+
+                Match match1 = halfRegex.Match(firstHalf);
+                Match match2 = halfRegex.Match(secondHalf);
+
+                if (!match1.Success || !match2.Success)
+                {
+                    Console.WriteLine($"ticket \"{input}\" - no match");
+                    continue;
+                }
+
+                Regex fullRegex = new Regex(@"\@{20}|\#{20}|\${20}|\^{20}");
+
+                Match match = fullRegex.Match(input);
+
+                if (match.Success)
+                {
+                    Console.WriteLine($"ticket \"{input}\" - {input.Length/2}{input[0]} Jackpot!");
+                    continue;
+                }
+
+                if (match1.Value == match2.Value)
+                {
+                    Console.WriteLine($"ticket \"{input}\" - {match1.Value.Length}{match1.Groups[0].Value[0]}");
+                }
+            }
+        }
+    }
+}
